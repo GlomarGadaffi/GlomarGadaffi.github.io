@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glomar — small radios, mostly</title>
+<meta name="description" content="Embedded RF and wireless security tools — ESP32, LoRa, SIP, Meshtastic. A plain index of the work.">
+<meta property="og:title" content="Glomar">
+<meta property="og:description" content="Small radios, mostly. ESP32 · LoRa · SIP · Meshtastic.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://glomargadaffi.github.io/">
+<style>
+  :root{
+    --bg:#0b0e11; --panel:#13181d; --panel-hi:#1a2128;
+    --ink:#e6edf3; --muted:#8b98a5; --faint:#5b6772;
+    --line:#222b33; --accent:#5eead4; --accent-dim:#2f6f66;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1040px; margin:0 auto; padding:clamp(2rem,5vw,4.5rem) clamp(1.1rem,4vw,2rem)}
+  code,.mono{font-family:"SF Mono",SFMono-Regular,ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace}
+
+  header{border-bottom:1px solid var(--line); padding-bottom:1.8rem; margin-bottom:2.4rem}
+  h1{font-size:clamp(2.2rem,7vw,3.4rem); margin:0 0 .35rem; letter-spacing:-.02em; font-weight:700}
+  h1 .dot{color:var(--accent)}
+  .tag{color:var(--muted); font-size:clamp(1rem,2.6vw,1.15rem); margin:0}
+  .tag .cat{color:var(--faint)}
+  .links{margin-top:1.1rem; display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; font-size:.93rem}
+  .links a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent; padding-bottom:1px}
+  .links a:hover,.links a:focus-visible{border-bottom-color:var(--accent-dim)}
+
+  section{margin:2.4rem 0}
+  h2{
+    font-family:inherit; font-size:.8rem; text-transform:uppercase; letter-spacing:.14em;
+    color:var(--muted); font-weight:600; margin:0 0 .9rem; padding-left:.7rem;
+    border-left:2px solid var(--accent-dim);
+  }
+  .grid{display:grid; gap:.75rem; grid-template-columns:repeat(auto-fill,minmax(258px,1fr))}
+  a.card{
+    display:block; text-decoration:none; color:inherit;
+    background:var(--panel); border:1px solid var(--line); border-radius:9px;
+    padding:.85rem .95rem 1rem; transition:transform .12s ease,border-color .12s ease,background .12s ease;
+  }
+  a.card:hover,a.card:focus-visible{
+    background:var(--panel-hi); border-color:var(--accent-dim); transform:translateY(-2px); outline:none;
+  }
+  a.card:focus-visible{box-shadow:0 0 0 2px var(--accent-dim)}
+  .name{color:var(--accent); font-weight:600; font-size:.98rem}
+  .name .arrow{color:var(--faint); transition:color .12s}
+  a.card:hover .name .arrow{color:var(--accent)}
+  .desc{color:var(--muted); font-size:.86rem; margin-top:.3rem; line-height:1.5}
+  .pill{display:inline-block; font-size:.66rem; letter-spacing:.05em; text-transform:uppercase;
+    color:var(--faint); border:1px solid var(--line); border-radius:5px; padding:.05rem .35rem; margin-left:.45rem; vertical-align:middle}
+
+  footer{margin-top:3.4rem; padding-top:1.5rem; border-top:1px solid var(--line);
+    color:var(--faint); font-size:.85rem; display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; justify-content:space-between}
+  footer a{color:var(--muted); text-decoration:none}
+  footer a:hover{color:var(--accent)}
+  @media (prefers-reduced-motion:reduce){a.card{transition:none} a.card:hover{transform:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Glomar<span class="dot">.</span></h1>
+    <p class="tag">Small radios, mostly. <span class="cat">ESP32 · LoRa · SIP · Meshtastic.</span> And a cat, allegedly.</p>
+    <nav class="links">
+      <a href="https://github.com/GlomarGadaffi">github.com/GlomarGadaffi</a>
+      <span style="color:var(--faint)">Most of these are tools I actually run. Vendored upstreams and synthetic demos say so.</span>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Telephony</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/pocket-dial"><span class="name">pocket-dial <span class="arrow">→</span></span><div class="desc">Self-contained SIP PBX on one ESP32-S3. Point any SIP phone at it and call.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/pocket-dial-handset"><span class="name">pocket-dial-handset <span class="arrow">→</span></span><div class="desc">Push-to-talk SIP handset; registers to pocket-dial.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/pocket-dial-voicemail"><span class="name">pocket-dial-voicemail <span class="arrow">→</span></span><div class="desc">Store-and-forward voicemail for pocket-dial.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/resiprocate"><span class="name">resiprocate <span class="arrow">→</span></span><div class="desc">SIP / ICE / TURN / STUN / RTP stack.<span class="pill">vendored</span></div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Wi-Fi / BLE</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/wifi-ble-marauder"><span class="name">wifi-ble-marauder <span class="arrow">→</span></span><div class="desc">ESP-IDF Wi-Fi/BLE security tool: 5 GHz deauth, Thread/Matter/Zigbee, BLE 5. No Arduino.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/deauth-detector"><span class="name">deauth-detector <span class="arrow">→</span></span><div class="desc">Distributed 802.11 attack detector with a LoRa back-haul.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/wigle-wardriver"><span class="name">wigle-wardriver <span class="arrow">→</span></span><div class="desc">Wi-Fi/BLE wardriver for Wigle.net, GPS-tagged to SD.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/esp32s3-mgmt-scanner"><span class="name">esp32s3-mgmt-scanner <span class="arrow">→</span></span><div class="desc">Passive 802.11 management-frame scanner for ESP32-S3.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/ble-sign-beacon"><span class="name">ble-sign-beacon <span class="arrow">→</span></span><div class="desc">Broadcast a short message as a BLE advertisement. Deliberately visible.</div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>LoRa / RF</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/lora-rf-toolkit"><span class="name">lora-rf-toolkit <span class="arrow">→</span></span><div class="desc">LoRa RF reverse-engineering: sweep, I/Q capture, chirp and parameter analysis.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/fsk-walkie-talkie"><span class="name">fsk-walkie-talkie <span class="arrow">→</span></span><div class="desc">Voice-over-FSK walkie-talkie (Codec2 + SX1262).</div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Scanner — Uniden BCD325P2</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/bcd325p2-protocol"><span class="name">bcd325p2-protocol <span class="arrow">→</span></span><div class="desc">Serial command-protocol reference for the BCD325P2.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/bcd325-splunk-addon"><span class="name">bcd325-splunk-addon <span class="arrow">→</span></span><div class="desc">Splunk add-on: ingest serial RF telemetry, parse P25/EDACS.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/bcd325-dashboard"><span class="name">bcd325-dashboard <span class="arrow">→</span></span><div class="desc">Decode, visualize, and persist BCD325P2 telemetry.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/p25-trunk-logger"><span class="name">p25-trunk-logger <span class="arrow">→</span></span><div class="desc">P25 trunked-radio control-channel logger; builds trunk-recorder configs.</div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Mesh / radio networking</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/meshtap"><span class="name">meshtap <span class="arrow">→</span></span><div class="desc">Passive Meshtastic capture to BigQuery over cellular MQTT.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/reticulum"><span class="name">reticulum <span class="arrow">→</span></span><div class="desc">Cryptography-based mesh over LoRa, packet radio, serial, TCP.<span class="pill">vendored</span></div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/rfparty"><span class="name">rfparty <span class="arrow">→</span></span><div class="desc">Wireless situational-awareness dashboard for BLE/Wi-Fi telemetry.<span class="pill">vendored</span></div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Comms / crypto</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/tor-voice"><span class="name">tor-voice <span class="arrow">→</span></span><div class="desc">Encrypted voice over Tor: in-process Arti onion service + Opus + Noise.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/glossh"><span class="name">glossh <span class="arrow">→</span></span><div class="desc">Minimal SSH 2.0 server for ESP-IDF on PSA Crypto.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/esp-secure-transport"><span class="name">esp-secure-transport <span class="arrow">→</span></span><div class="desc">MIT/PD secure-transport stack for ESP-IDF.<span class="pill">paused</span></div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Hardware / tooling</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/jc3248-display-driver"><span class="name">jc3248-display-driver <span class="arrow">→</span></span><div class="desc">ESP-IDF driver + bring-up for the Guition JC3248W535EN (AXS15231B QSPI).</div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Agents / data</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/esp32-ai-agent"><span class="name">esp32-ai-agent <span class="arrow">→</span></span><div class="desc">ESP32 AI agent with persistent memory and an offline rule engine.</div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/ask-the-logs"><span class="name">ask-the-logs <span class="arrow">→</span></span><div class="desc">Natural-language queries over BigQuery via Google ADK + Gemini.</div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Synthetic demos</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/deanon-demo"><span class="name">deanon-demo <span class="arrow">→</span></span><div class="desc">What ~$900 of commodity hardware reconstructs about multi-channel pseudonymity.<span class="pill">synthetic</span></div></a>
+        <a class="card" href="https://github.com/GlomarGadaffi/sentinel-node-demo"><span class="name">sentinel-node-demo <span class="arrow">→</span></span><div class="desc">Second- and third-order surveillance / counter-surveillance effects.<span class="pill">synthetic</span></div></a>
+      </div>
+    </section>
+
+    <section>
+      <h2>Other</h2>
+      <div class="grid">
+        <a class="card" href="https://github.com/GlomarGadaffi/rdp-publisher-cert"><span class="name">rdp-publisher-cert <span class="arrow">→</span></span><div class="desc">Provisions a publisher certificate for .rdp files: self-signed, Group Policy, consent bypass.</div></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <span>Built on small boards in spare hours.</span>
+    <a href="https://github.com/GlomarGadaffi">→ all repos on GitHub</a>
+  </footer>
+</div>
+</body>
+</html>
