@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Glomar — small radios, mostly</title>
-<meta name="description" content="Small radios, mostly. ESP32, LoRa, SIP, Meshtastic. A walk through the work, in the order it makes sense.">
-<meta property="og:title" content="Glomar">
-<meta property="og:description" content="Small radios, mostly. ESP32 · LoRa · SIP · Meshtastic.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://glomargadaffi.github.io/">
+<title>the whole thing, in the order it makes sense — Glomar notes</title>
+<meta name="description" content="What a couple dozen repos look like when you stand them in a line: talk on it, listen to it, talk back, hide on it.">
+<meta property="og:title" content="the whole thing, in the order it makes sense">
+<meta property="og:description" content="A walk through the work, in the order it makes sense.">
+<meta property="og:type" content="article">
 <style>
   :root{
     --bg:#0c0d0f; --panel:#131619; --panel-hi:#1a1f24;
@@ -31,17 +30,20 @@
   a{color:var(--wire)}
   a:focus-visible{outline:2px solid var(--wire); outline-offset:2px; border-radius:3px}
 
+  .topnav{font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace;
+    font-size:.8rem; margin:0 0 1.9rem; color:var(--faint)}
+  .topnav a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--wire-dim)}
+  .topnav a:hover{color:var(--wire)}
+  .topnav .sep{margin:0 .55rem; color:var(--faint)}
+
   /* --- header / the premise --- */
   header{padding-bottom:.5rem}
-  h1{font-size:clamp(2.1rem,8vw,3rem); margin:0; letter-spacing:-.02em; font-weight:700}
+  .dateline{font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace;
+    font-size:.72rem; letter-spacing:.16em; text-transform:uppercase; color:var(--faint); margin:0 0 .7rem}
+  h1{font-size:clamp(2rem,7vw,2.8rem); margin:0; letter-spacing:-.02em; font-weight:700; line-height:1.08}
   h1 .blip{color:var(--wire)}
-  .tag{color:var(--muted); font-size:clamp(1.02rem,3vw,1.18rem); margin:.5rem 0 0}
-  .tag .cat{color:var(--faint)}
-  .premise{color:var(--muted); font-size:1rem; max-width:60ch; margin:1.3rem 0 0}
+  .premise{color:var(--muted); font-size:1.04rem; max-width:60ch; margin:1.2rem 0 0}
   .premise b{color:var(--ink); font-weight:600}
-  .meta{margin-top:1.2rem; font-size:.9rem; color:var(--faint)}
-  .meta a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--wire-dim)}
-  .meta a:hover{color:var(--wire)}
 
   /* --- the spine: a vertical rail the whole story hangs off --- */
   main{position:relative; margin-top:2.6rem; padding-left:1.7rem}
@@ -50,10 +52,9 @@
     width:1px; background:linear-gradient(var(--wire-dim),var(--rail) 60%,transparent);
   }
   .movement{position:relative; margin:0 0 2.9rem}
-  /* node on the rail */
   .movement::before{
     content:""; position:absolute; left:-1.7rem; top:.55rem;
-    width:11px; height:11px; margin-left:0; border-radius:50%;
+    width:11px; height:11px; border-radius:50%;
     background:var(--bg); border:1px solid var(--wire-dim); box-shadow:0 0 0 4px var(--bg);
   }
   .movement:target::before, .movement:hover::before{border-color:var(--wire); background:var(--wire-dim)}
@@ -76,14 +77,13 @@
   .nm{flex:0 0 auto; color:var(--wire); font-weight:600; font-size:.95rem;
       font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace; letter-spacing:-.01em}
   .ds{flex:1 1 auto; color:var(--muted); font-size:.9rem; line-height:1.5}
-  .ds em{color:var(--ink); font-style:normal}        /* let a phrase point at the next repo */
+  .ds em{color:var(--ink); font-style:normal}
   .tag-pill{display:inline-block; font-size:.62rem; letter-spacing:.06em; text-transform:uppercase;
     color:var(--faint); border:1px solid var(--line); border-radius:4px; padding:.02rem .34rem; margin-left:.4rem; vertical-align:middle}
   .arrow{flex:0 0 auto; color:var(--faint); align-self:center; font-size:.95rem; transition:color .12s, transform .12s}
   .line:hover .arrow{color:var(--wire); transform:translateX(2px)}
   @media (prefers-reduced-motion:reduce){.line:hover .arrow{transform:none}}
 
-  /* the "doesn't fit" coda, deliberately set apart */
   .coda{border-top:1px solid var(--line); margin-top:.5rem; padding-top:1.6rem}
   .coda .lede{font-size:.92rem}
 
@@ -102,31 +102,28 @@
 <body>
 <div class="wrap">
 
+  <nav class="topnav"><a href="../">glomar</a><span class="sep">/</span><a href="./">notes</a></nav>
+
   <header>
-    <h1>Glomar<span class="blip">.</span></h1>
-    <p class="tag">Small radios, mostly. <span class="cat">ESP32 · LoRa · SIP · Meshtastic.</span> And a cat, allegedly.</p>
-    <p class="premise">About <b>27 repos</b>, and they're not really 27 separate things. It's mostly one question poked at from a few sides: <b>what can a $10 board do to the air around it?</b> Talk on it, listen to it, hide on it, or stay up on it when everything else falls over. Here's the work in roughly that order. Most of these I actually run.</p>
-    <p class="meta mono">→ <a href="https://github.com/GlomarGadaffi">github.com/GlomarGadaffi</a> &nbsp;·&nbsp; vendored upstreams, synthetic demos, and paused things all say so below.</p>
+    <p class="dateline">2026-06-23 · the work, end to end</p>
+    <h1>the whole thing, in the order it makes sense<span class="blip">.</span></h1>
+    <p class="premise">A couple dozen repos, and they're not really separate things. It's mostly one question poked at from a few sides: <b>what can a $10 board do to the air around it?</b> Talk on it, listen to it, hide on it, or stay up on it when everything else falls over. Here's the work in roughly that order. Most of these I actually run.</p>
   </header>
 
   <main>
 
-    <!-- 1 — talk on it -->
     <section class="movement" id="phone">
       <span class="step mono">01 — talk on it</span>
       <h2>A phone system that fits in your hand</h2>
-      <p class="lede">It started as one ESP32 pretending to be a whole PBX. Then it needed something to call <em>from</em>, then somewhere for the calls to <em>go</em> when nobody picked up. So it grew a handset and a voicemail box. Four repos that only make sense together.</p>
+      <p class="lede">It started as one ESP32 pretending to be a whole PBX. Then it needed something to call <em>from</em>. So it grew a handset. Three repos that only make sense together.</p>
       <a class="line" href="https://github.com/GlomarGadaffi/pocket-dial">
         <span class="nm">pocket-dial</span><span class="ds">self-contained SIP PBX on one ESP32-S3. point any SIP phone at it and <em>call</em>.</span><span class="arrow mono">→</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/pocket-dial-handset">
         <span class="nm">+ handset</span><span class="ds">push-to-talk SIP handset. registers <em>to pocket-dial</em> — so now you have a phone to call from.</span><span class="arrow mono">→</span></a>
-      <a class="line" href="https://github.com/GlomarGadaffi/pocket-dial-voicemail">
-        <span class="nm">+ voicemail</span><span class="ds">store-and-forward voicemail, <em>for when pocket-dial doesn't answer</em>.</span><span class="arrow mono">→</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/resiprocate">
         <span class="nm">resiprocate</span><span class="ds">the SIP / ICE / TURN / STUN / RTP stack doing the actual work underneath. <span class="tag-pill">vendored</span></span><span class="arrow mono">→</span></a>
     </section>
 
-    <!-- 2 — listen to it -->
     <section class="movement" id="listen">
       <span class="step mono">02 — listen to it</span>
       <h2>Radios that listen, and remember what they heard</h2>
@@ -143,7 +140,6 @@
         <span class="nm">meshtap</span><span class="ds">same idea, mesh side: passive Meshtastic capture to BigQuery over cellular MQTT. <em>capture now, query later.</em></span><span class="arrow mono">→</span></a>
     </section>
 
-    <!-- 3 — talk back to it -->
     <section class="movement" id="poke">
       <span class="step mono">03 — talk back to it</span>
       <h2>Radios that don't just listen</h2>
@@ -164,7 +160,6 @@
         <span class="nm">fsk-walkie-talkie</span><span class="ds">voice-over-FSK walkie-talkie (Codec2 + SX1262). a phone again, but over raw radio.</span><span class="arrow mono">→</span></a>
     </section>
 
-    <!-- 4 — hide on it / keep it up -->
     <section class="movement" id="hide">
       <span class="step mono">04 — hide on it, keep it up</span>
       <h2>Comms that hide, or refuse to die</h2>
@@ -181,7 +176,6 @@
         <span class="nm">rfparty</span><span class="ds">wireless situational-awareness dashboard for BLE/Wi-Fi telemetry. <span class="tag-pill">vendored</span></span><span class="arrow mono">→</span></a>
     </section>
 
-    <!-- 5 — the stuff that makes the rest usable -->
     <section class="movement" id="edges">
       <span class="step mono">05 — the stuff around the edges</span>
       <h2>Bits that make the rest bearable</h2>
@@ -194,7 +188,6 @@
         <span class="nm">ask-the-logs</span><span class="ds">natural-language queries over BigQuery (Google ADK + Gemini). <em>this is what reads what meshtap wrote.</em></span><span class="arrow mono">→</span></a>
     </section>
 
-    <!-- 6 — synthetic demos, honestly labeled -->
     <section class="movement" id="demos">
       <span class="step mono">06 — what it adds up to (on purpose)</span>
       <h2>Two demos, made up so I don't have to use real ones</h2>
@@ -205,7 +198,6 @@
         <span class="nm">sentinel-node-demo</span><span class="ds">second- and third-order surveillance / counter-surveillance effects. <span class="tag-pill">synthetic</span></span><span class="arrow mono">→</span></a>
     </section>
 
-    <!-- coda — the one that doesn't fit -->
     <section class="movement coda" id="misc">
       <span class="step mono">— doesn't fit the story</span>
       <h2>The odd one out</h2>
@@ -218,7 +210,7 @@
 
   <footer>
     <span>built on small boards in spare hours.</span>
-    <a href="https://github.com/GlomarGadaffi">→ all 27 repos on GitHub</a>
+    <a href="../">← back to glomar</a>
   </footer>
 
 </div>

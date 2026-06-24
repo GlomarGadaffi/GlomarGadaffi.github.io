@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>notes — Glomar</title>
+<meta name="description" content="Occasional writing about small radios and what they get up to.">
+<meta property="og:title" content="Glomar — notes">
+<meta property="og:description" content="Occasional writing about small radios and what they get up to.">
+<meta property="og:type" content="website">
+<style>
+  :root{
+    --bg:#0c0d0f; --panel:#131619;
+    --ink:#e7e9ec; --muted:#9aa4ad; --faint:#646d76;
+    --line:#23282e;
+    --wire:#7fb2a6; --wire-dim:#3a5750;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:clamp(2rem,5vw,4rem) clamp(1.1rem,5vw,1.8rem)}
+  .mono{font-family:"SF Mono",SFMono-Regular,ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace}
+  a{color:var(--wire)}
+  a:focus-visible{outline:2px solid var(--wire); outline-offset:2px; border-radius:3px}
+
+  .topnav{font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace;
+    font-size:.8rem; margin:0 0 1.9rem; color:var(--faint)}
+  .topnav a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--wire-dim)}
+  .topnav a:hover{color:var(--wire)}
+
+  header{margin-bottom:2.4rem}
+  h1{font-size:clamp(2rem,7vw,2.8rem); margin:0; letter-spacing:-.02em; font-weight:700}
+  h1 .blip{color:var(--wire)}
+  .intro{color:var(--muted); font-size:1.02rem; max-width:58ch; margin:1rem 0 0}
+
+  .posts{list-style:none; margin:0; padding:0}
+  .post{padding:1.3rem 0; border-bottom:1px solid var(--line)}
+  .post:first-child{border-top:1px solid var(--line)}
+  .post .date{font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace;
+    font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); margin:0 0 .4rem}
+  .post h2{font-size:1.18rem; margin:0; line-height:1.3; font-weight:650; letter-spacing:-.01em}
+  .post h2 a{text-decoration:none; color:var(--ink)}
+  .post h2 a:hover,.post h2 a:focus-visible{color:var(--wire)}
+  .post .dek{color:var(--muted); font-size:.93rem; margin:.45rem 0 0; max-width:60ch; line-height:1.5}
+
+  footer{margin-top:3rem; padding-top:1.4rem; border-top:1px solid var(--line);
+    color:var(--faint); font-size:.86rem; display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; justify-content:space-between}
+  footer a{color:var(--muted); text-decoration:none}
+  footer a:hover{color:var(--wire)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav class="topnav"><a href="../">← glomar</a></nav>
+
+  <header>
+    <h1>notes<span class="blip">.</span></h1>
+    <p class="intro">Occasional writing about small radios and what they get up to. Sparse on purpose — I'd rather ship than blog.</p>
+  </header>
+
+  <main>
+    <ul class="posts">
+      <li class="post">
+        <p class="date">2026-06-23</p>
+        <h2><a href="the-whole-thing.html">the whole thing, in the order it makes sense</a></h2>
+        <p class="dek">What a couple dozen repos look like when you stand them in a line: talk on it, listen to it, talk back, hide on it. The work isn't really separate things — it's one question poked at from a few sides.</p>
+      </li>
+    </ul>
+  </main>
+
+  <footer>
+    <span>built on small boards in spare hours.</span>
+    <a href="https://github.com/GlomarGadaffi">all of it on GitHub →</a>
+  </footer>
+
+</div>
+</body>
+</html>

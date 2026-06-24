@@ -4,169 +4,218 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Glomar — small radios, mostly</title>
-<meta name="description" content="Embedded RF and wireless security tools — ESP32, LoRa, SIP, Meshtastic. A plain index of the work.">
+<meta name="description" content="A solo embedded/RF hacker. ESP32, LoRa, SIP, Meshtastic, P25. Small wireless things that mostly work.">
 <meta property="og:title" content="Glomar">
-<meta property="og:description" content="Small radios, mostly. ESP32 · LoRa · SIP · Meshtastic.">
+<meta property="og:description" content="Small radios, mostly. ESP32 · LoRa · SIP · Meshtastic. And a cat, allegedly.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://glomargadaffi.github.io/">
 <style>
   :root{
-    --bg:#0b0e11; --panel:#13181d; --panel-hi:#1a2128;
-    --ink:#e6edf3; --muted:#8b98a5; --faint:#5b6772;
-    --line:#222b33; --accent:#5eead4; --accent-dim:#2f6f66;
+    /* warm near-black, parchment ink, one desaturated ember signal */
+    --bg:#15140f;
+    --bg-row:#1b1a14;
+    --ink:#e9e3d4;        /* parchment-warm, not blue-white */
+    --muted:#a39c87;      /* AA text: 6.7:1 on bg, 6.4:1 on row */
+    --faint:#8f8976;      /* AA text: 5.3:1 on bg, 5.0:1 on row */
+    --rule:#322f25;
+    --signal:#cf8a5b;     /* desaturated rust/ember — used rarely */
+    --signal-dim:#6e5238;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --mono:"SF Mono",SFMono-Regular,ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
   }
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{
     margin:0; background:var(--bg); color:var(--ink);
-    font:16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
+    font:15px/1.6 var(--sans);
+    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
   }
-  .wrap{max-width:1040px; margin:0 auto; padding:clamp(2rem,5vw,4.5rem) clamp(1.1rem,4vw,2rem)}
-  code,.mono{font-family:"SF Mono",SFMono-Regular,ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace}
+  .wrap{max-width:880px; margin:0 auto; padding:clamp(2.2rem,6vw,5rem) clamp(1.15rem,4vw,2rem)}
 
-  header{border-bottom:1px solid var(--line); padding-bottom:1.8rem; margin-bottom:2.4rem}
-  h1{font-size:clamp(2.2rem,7vw,3.4rem); margin:0 0 .35rem; letter-spacing:-.02em; font-weight:700}
-  h1 .dot{color:var(--accent)}
-  .tag{color:var(--muted); font-size:clamp(1rem,2.6vw,1.15rem); margin:0}
-  .tag .cat{color:var(--faint)}
-  .links{margin-top:1.1rem; display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; font-size:.93rem}
-  .links a{color:var(--accent); text-decoration:none; border-bottom:1px solid transparent; padding-bottom:1px}
-  .links a:hover,.links a:focus-visible{border-bottom-color:var(--accent-dim)}
+  /* ---- hero: plain, naked, confident ---- */
+  header{margin-bottom:clamp(2.6rem,6vw,4rem)}
+  .who{font-family:var(--mono); font-size:.72rem; letter-spacing:.22em; text-transform:uppercase;
+       color:var(--faint); margin:0 0 1.1rem}
+  h1{font-size:clamp(2.4rem,9vw,4.2rem); line-height:.98; letter-spacing:-.03em;
+     font-weight:680; margin:0; color:var(--ink)}
+  .lede{font-size:clamp(1.05rem,2.8vw,1.28rem); line-height:1.5; color:var(--ink);
+        max-width:44ch; margin:1.4rem 0 0; font-weight:420}
+  .lede .stack{font-family:var(--mono); font-size:.86em; color:var(--muted); letter-spacing:-.01em}
+  .lede .cat{color:var(--faint)}
+  .meta{margin-top:1.5rem; font-size:.9rem; color:var(--muted); max-width:56ch; line-height:1.6}
+  .meta a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--signal-dim);
+          padding-bottom:1px; font-family:var(--mono); font-size:.92em}
+  .meta a:hover,.meta a:focus-visible{border-bottom-color:var(--signal); color:var(--signal); outline:none}
+  .meta .flag{font-family:var(--mono); font-size:.85em; color:var(--faint); white-space:nowrap}
+  .meta .flag b{font-weight:400; color:var(--signal)}
 
-  section{margin:2.4rem 0}
-  h2{
-    font-family:inherit; font-size:.8rem; text-transform:uppercase; letter-spacing:.14em;
-    color:var(--muted); font-weight:600; margin:0 0 .9rem; padding-left:.7rem;
-    border-left:2px solid var(--accent-dim);
-  }
-  .grid{display:grid; gap:.75rem; grid-template-columns:repeat(auto-fill,minmax(258px,1fr))}
-  a.card{
-    display:block; text-decoration:none; color:inherit;
-    background:var(--panel); border:1px solid var(--line); border-radius:9px;
-    padding:.85rem .95rem 1rem; transition:transform .12s ease,border-color .12s ease,background .12s ease;
-  }
-  a.card:hover,a.card:focus-visible{
-    background:var(--panel-hi); border-color:var(--accent-dim); transform:translateY(-2px); outline:none;
-  }
-  a.card:focus-visible{box-shadow:0 0 0 2px var(--accent-dim)}
-  .name{color:var(--accent); font-weight:600; font-size:.98rem}
-  .name .arrow{color:var(--faint); transition:color .12s}
-  a.card:hover .name .arrow{color:var(--accent)}
-  .desc{color:var(--muted); font-size:.86rem; margin-top:.3rem; line-height:1.5}
-  .pill{display:inline-block; font-size:.66rem; letter-spacing:.05em; text-transform:uppercase;
-    color:var(--faint); border:1px solid var(--line); border-radius:5px; padding:.05rem .35rem; margin-left:.45rem; vertical-align:middle}
+  /* ---- sections: lowercase comment markers + a dry blurb ---- */
+  section{margin:0 0 clamp(1.9rem,4vw,2.6rem)}
+  .shead{display:flex; align-items:baseline; gap:.7rem; margin:0 0 .35rem;
+         padding-bottom:.45rem; border-bottom:1px solid var(--rule)}
+  .shead h2{font-family:var(--mono); font-size:.82rem; font-weight:500; letter-spacing:.01em;
+            color:var(--muted); margin:0; text-transform:none; white-space:nowrap}
+  .shead h2 .hash{color:var(--faint)}
+  .blurb{font-family:var(--sans); font-size:.8rem; font-weight:400; color:var(--faint);
+         line-height:1.3}
+  .count{font-family:var(--mono); font-size:.7rem; color:var(--faint); margin-left:auto; white-space:nowrap}
 
-  footer{margin-top:3.4rem; padding-top:1.5rem; border-top:1px solid var(--line);
-    color:var(--faint); font-size:.85rem; display:flex; flex-wrap:wrap; gap:.4rem 1.2rem; justify-content:space-between}
-  footer a{color:var(--muted); text-decoration:none}
-  footer a:hover{color:var(--accent)}
-  @media (prefers-reduced-motion:reduce){a.card{transition:none} a.card:hover{transform:none}}
+  /* ---- the manifest: rows, not cards ---- */
+  .rows{display:block}
+  a.row{
+    display:grid;
+    grid-template-columns:minmax(11.5rem,15rem) 1fr;
+    gap:.2rem 1.5rem; align-items:baseline;
+    text-decoration:none; color:inherit;
+    padding:.62rem .7rem .62rem .55rem; margin:0 -.7rem 0 -.55rem;
+    border-radius:4px;
+    border-left:2px solid transparent;
+    transition:background .12s ease, border-color .12s ease;
+  }
+  a.row:hover,a.row:focus-visible{
+    background:var(--bg-row); border-left-color:var(--signal); outline:none;
+  }
+  a.row:focus-visible{box-shadow:0 0 0 1px var(--signal-dim)}
+  .name{font-family:var(--mono); font-size:.92rem; color:var(--ink); font-weight:500;
+        letter-spacing:-.01em; word-break:break-word}
+  a.row:hover .name,a.row:focus-visible .name{color:var(--signal)}
+  .desc{color:var(--muted); font-size:.9rem; line-height:1.45}
+  .flag{display:inline; font-family:var(--mono); font-size:.78em; color:var(--faint);
+        white-space:nowrap}
+  .flag b{font-weight:400; color:var(--signal)}
+
+  /* ---- footer ---- */
+  footer{margin-top:clamp(2.6rem,6vw,4rem); padding-top:1.4rem; border-top:1px solid var(--rule);
+         display:flex; flex-wrap:wrap; gap:.7rem 1.4rem; justify-content:space-between;
+         align-items:baseline; font-size:.85rem}
+  footer .note{color:var(--faint); max-width:54ch; line-height:1.55}
+  footer a{color:var(--muted); text-decoration:none; font-family:var(--mono); font-size:.92em; white-space:nowrap}
+  footer a:hover,footer a:focus-visible{color:var(--signal); outline:none}
+
+  @media (max-width:620px){ .blurb{display:none} }
+  @media (max-width:560px){
+    a.row{grid-template-columns:1fr; gap:.25rem; padding:.7rem .55rem}
+  }
+  @media (prefers-reduced-motion:reduce){
+    a.row{transition:none}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <header>
-    <h1>Glomar<span class="dot">.</span></h1>
-    <p class="tag">Small radios, mostly. <span class="cat">ESP32 · LoRa · SIP · Meshtastic.</span> And a cat, allegedly.</p>
-    <nav class="links">
-      <a href="https://github.com/GlomarGadaffi">github.com/GlomarGadaffi</a>
-      <span style="color:var(--faint)">Most of these are tools I actually run. Vendored upstreams and synthetic demos say so.</span>
-    </nav>
+    <p class="who">Glomar</p>
+    <h1>small radios,<br>mostly.</h1>
+    <p class="lede">
+      I build little wireless things on ESP32 — <span class="stack">SIP, LoRa, Meshtastic,</span>
+      the occasional police scanner — and ship them before they're done.
+      <span class="cat">And a cat, allegedly.</span>
+    </p>
+    <p class="meta">
+      Most of it is stuff I actually run in the field. Where I'm leaning on someone else's code
+      it says <span class="flag">[<b>vendored</b>]</span>, where the data's made up
+      <span class="flag">[<b>synthetic</b>]</span>, where I got bored
+      <span class="flag">[<b>paused</b>]</span>. No surprises.
+      <br><a href="https://github.com/GlomarGadaffi">github.com/GlomarGadaffi</a> — a couple dozen of these, give or take. · <a href="notes/">notes →</a>
+    </p>
   </header>
 
   <main>
+
     <section>
-      <h2>Telephony</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/pocket-dial"><span class="name">pocket-dial <span class="arrow">→</span></span><div class="desc">Self-contained SIP PBX on one ESP32-S3. Point any SIP phone at it and call.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/pocket-dial-handset"><span class="name">pocket-dial-handset <span class="arrow">→</span></span><div class="desc">Push-to-talk SIP handset; registers to pocket-dial.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/resiprocate"><span class="name">resiprocate <span class="arrow">→</span></span><div class="desc">SIP / ICE / TURN / STUN / RTP stack.<span class="pill">vendored</span></div></a>
+      <div class="shead"><h2><span class="hash">#</span> telephony</h2><span class="blurb">a phone network on a chip you can lose in a drawer</span><span class="count">3</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/pocket-dial"><span class="name">pocket-dial</span><span class="desc">A whole SIP PBX on one ESP32-S3. Aim a phone at it, dial, talk. No server in a closet somewhere.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/pocket-dial-handset"><span class="name">pocket-dial-handset</span><span class="desc">Push-to-talk SIP handset that registers to pocket-dial. The thing you actually hold.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/resiprocate"><span class="name">resiprocate</span><span class="desc">The SIP / ICE / TURN / STUN / RTP stack underneath. I didn't write this part. <span class="flag">[<b>vendored</b>]</span></span></a>
       </div>
     </section>
 
     <section>
-      <h2>Wi-Fi / BLE</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/wifi-ble-marauder"><span class="name">wifi-ble-marauder <span class="arrow">→</span></span><div class="desc">ESP-IDF Wi-Fi/BLE security tool: 5 GHz deauth, Thread/Matter/Zigbee, BLE 5. No Arduino.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/deauth-detector"><span class="name">deauth-detector <span class="arrow">→</span></span><div class="desc">Distributed 802.11 attack detector with a LoRa back-haul.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/wigle-wardriver"><span class="name">wigle-wardriver <span class="arrow">→</span></span><div class="desc">Wi-Fi/BLE wardriver for Wigle.net, GPS-tagged to SD.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/esp32s3-mgmt-scanner"><span class="name">esp32s3-mgmt-scanner <span class="arrow">→</span></span><div class="desc">Passive 802.11 management-frame scanner for ESP32-S3.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/ble-sign-beacon"><span class="name">ble-sign-beacon <span class="arrow">→</span></span><div class="desc">Broadcast a short message as a BLE advertisement. Deliberately visible.</div></a>
+      <div class="shead"><h2><span class="hash">#</span> wifi / ble</h2><span class="blurb">seeing what the air is up to</span><span class="count">5</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/wifi-ble-marauder"><span class="name">wifi-ble-marauder</span><span class="desc">Wi-Fi/BLE security tool in straight ESP-IDF: 5 GHz deauth, Thread/Matter/Zigbee, BLE 5. No Arduino, on purpose.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/deauth-detector"><span class="name">deauth-detector</span><span class="desc">Notices when someone's kicking devices off 802.11, and tells the other nodes over LoRa.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/wigle-wardriver"><span class="name">wigle-wardriver</span><span class="desc">Wardriver for Wigle.net. Logs Wi-Fi/BLE to SD with a GPS fix stapled to each one.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/esp32s3-mgmt-scanner"><span class="name">esp32s3-mgmt-scanner</span><span class="desc">Passive 802.11 management-frame scanner for the ESP32-S3. Listens, doesn't transmit.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/ble-sign-beacon"><span class="name">ble-sign-beacon</span><span class="desc">Shouts a short message as a BLE advertisement. The whole point is that it's seen.</span></a>
       </div>
     </section>
 
     <section>
-      <h2>LoRa / RF</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/lora-rf-toolkit"><span class="name">lora-rf-toolkit <span class="arrow">→</span></span><div class="desc">LoRa RF reverse-engineering: sweep, I/Q capture, chirp and parameter analysis.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/fsk-walkie-talkie"><span class="name">fsk-walkie-talkie <span class="arrow">→</span></span><div class="desc">Voice-over-FSK walkie-talkie (Codec2 + SX1262).</div></a>
+      <div class="shead"><h2><span class="hash">#</span> lora / rf</h2><span class="blurb">long range, small power, weird waveforms</span><span class="count">2</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/lora-rf-toolkit"><span class="name">lora-rf-toolkit</span><span class="desc">For pulling LoRa apart: frequency sweeps, I/Q capture, chirp and parameter analysis.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/fsk-walkie-talkie"><span class="name">fsk-walkie-talkie</span><span class="desc">Two of these and you've got walkie-talkies. Voice over FSK, Codec2 on an SX1262.</span></a>
       </div>
     </section>
 
     <section>
-      <h2>Scanner — Uniden BCD325P2</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/bcd325p2-protocol"><span class="name">bcd325p2-protocol <span class="arrow">→</span></span><div class="desc">Serial command-protocol reference for the BCD325P2.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/bcd325-splunk-addon"><span class="name">bcd325-splunk-addon <span class="arrow">→</span></span><div class="desc">Splunk add-on: ingest serial RF telemetry, parse P25/EDACS.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/bcd325-dashboard"><span class="name">bcd325-dashboard <span class="arrow">→</span></span><div class="desc">Decode, visualize, and persist BCD325P2 telemetry.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/p25-trunk-logger"><span class="name">p25-trunk-logger <span class="arrow">→</span></span><div class="desc">P25 trunked-radio control-channel logger; builds trunk-recorder configs.</div></a>
+      <div class="shead"><h2><span class="hash">#</span> scanner — uniden bcd325p2</h2><span class="blurb">getting data out of the box</span><span class="count">4</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/bcd325p2-protocol"><span class="name">bcd325p2-protocol</span><span class="desc">Serial command-protocol reference for the BCD325P2. The manual the manual should have been.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/bcd325-splunk-addon"><span class="name">bcd325-splunk-addon</span><span class="desc">Splunk add-on that swallows the scanner's serial telemetry and parses P25/EDACS.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/bcd325-dashboard"><span class="name">bcd325-dashboard</span><span class="desc">Decodes, draws, and keeps BCD325P2 telemetry so you can see what the scanner heard.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/p25-trunk-logger"><span class="name">p25-trunk-logger</span><span class="desc">Logs P25 trunked control channels and spits out trunk-recorder configs from what it learns.</span></a>
       </div>
     </section>
 
     <section>
-      <h2>Mesh / radio networking</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/meshtap"><span class="name">meshtap <span class="arrow">→</span></span><div class="desc">Passive Meshtastic capture to BigQuery over cellular MQTT.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/reticulum"><span class="name">reticulum <span class="arrow">→</span></span><div class="desc">Cryptography-based mesh over LoRa, packet radio, serial, TCP.<span class="pill">vendored</span></div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/rfparty"><span class="name">rfparty <span class="arrow">→</span></span><div class="desc">Wireless situational-awareness dashboard for BLE/Wi-Fi telemetry.<span class="pill">vendored</span></div></a>
+      <div class="shead"><h2><span class="hash">#</span> mesh / radio networking</h2><span class="blurb">networks with no one in charge</span><span class="count">3</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/meshtap"><span class="name">meshtap</span><span class="desc">Quietly siphons Meshtastic traffic into BigQuery over a cellular MQTT link.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/reticulum"><span class="name">reticulum</span><span class="desc">Crypto-based mesh over LoRa, packet radio, serial, TCP — works where the internet doesn't. <span class="flag">[<b>vendored</b>]</span></span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/rfparty"><span class="name">rfparty</span><span class="desc">A dashboard that turns BLE/Wi-Fi telemetry into a picture of who's around. <span class="flag">[<b>vendored</b>]</span></span></a>
       </div>
     </section>
 
     <section>
-      <h2>Comms / crypto</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/tor-voice"><span class="name">tor-voice <span class="arrow">→</span></span><div class="desc">Encrypted voice over Tor: in-process Arti onion service + Opus + Noise.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/glossh"><span class="name">glossh <span class="arrow">→</span></span><div class="desc">Minimal SSH 2.0 server for ESP-IDF on PSA Crypto.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/esp-secure-transport"><span class="name">esp-secure-transport <span class="arrow">→</span></span><div class="desc">MIT/PD secure-transport stack for ESP-IDF.<span class="pill">paused</span></div></a>
+      <div class="shead"><h2><span class="hash">#</span> comms / crypto</h2><span class="blurb">talking without everyone listening</span><span class="count">3</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/tor-voice"><span class="name">tor-voice</span><span class="desc">Encrypted voice over Tor: an in-process Arti onion service, Opus, and Noise doing the talking.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/glossh"><span class="name">glossh</span><span class="desc">A tiny SSH 2.0 server for ESP-IDF, built on PSA Crypto. Just enough to get a shell.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/esp-secure-transport"><span class="name">esp-secure-transport</span><span class="desc">A MIT/PD secure-transport stack for ESP-IDF. Set down for now, not abandoned. <span class="flag">[<b>paused</b>]</span></span></a>
       </div>
     </section>
 
     <section>
-      <h2>Hardware / tooling</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/jc3248-display-driver"><span class="name">jc3248-display-driver <span class="arrow">→</span></span><div class="desc">ESP-IDF driver + bring-up for the Guition JC3248W535EN (AXS15231B QSPI).</div></a>
+      <div class="shead"><h2><span class="hash">#</span> hardware / tooling</h2><span class="blurb">making a screen turn on</span><span class="count">1</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/jc3248-display-driver"><span class="name">jc3248-display-driver</span><span class="desc">ESP-IDF driver and bring-up for the Guition JC3248W535EN (AXS15231B over QSPI). Mostly so I never have to do it again.</span></a>
       </div>
     </section>
 
     <section>
-      <h2>Agents / data</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/esp32-ai-agent"><span class="name">esp32-ai-agent <span class="arrow">→</span></span><div class="desc">ESP32 AI agent with persistent memory and an offline rule engine.</div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/ask-the-logs"><span class="name">ask-the-logs <span class="arrow">→</span></span><div class="desc">Natural-language queries over BigQuery via Google ADK + Gemini.</div></a>
+      <div class="shead"><h2><span class="hash">#</span> agents / data</h2><span class="blurb">small brains, big logs</span><span class="count">2</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/esp32-ai-agent"><span class="name">esp32-ai-agent</span><span class="desc">An AI agent on an ESP32 that remembers things and runs a rule engine offline when the cloud's gone.</span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/ask-the-logs"><span class="name">ask-the-logs</span><span class="desc">Ask BigQuery questions in plain English. Google ADK plus Gemini do the SQL.</span></a>
       </div>
     </section>
 
     <section>
-      <h2>Synthetic demos</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/deanon-demo"><span class="name">deanon-demo <span class="arrow">→</span></span><div class="desc">What ~$900 of commodity hardware reconstructs about multi-channel pseudonymity.<span class="pill">synthetic</span></div></a>
-        <a class="card" href="https://github.com/GlomarGadaffi/sentinel-node-demo"><span class="name">sentinel-node-demo <span class="arrow">→</span></span><div class="desc">Second- and third-order surveillance / counter-surveillance effects.<span class="pill">synthetic</span></div></a>
+      <div class="shead"><h2><span class="hash">#</span> synthetic demos</h2><span class="blurb">made-up data, real point</span><span class="count">2</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/deanon-demo"><span class="name">deanon-demo</span><span class="desc">What roughly $900 of off-the-shelf gear can piece back together about someone juggling pseudonyms. Numbers are fake; the lesson isn't. <span class="flag">[<b>synthetic</b>]</span></span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/sentinel-node-demo"><span class="name">sentinel-node-demo</span><span class="desc">The second- and third-order ways watching and counter-watching feed back on each other. <span class="flag">[<b>synthetic</b>]</span></span></a>
       </div>
     </section>
 
     <section>
-      <h2>Other</h2>
-      <div class="grid">
-        <a class="card" href="https://github.com/GlomarGadaffi/rdp-publisher-cert"><span class="name">rdp-publisher-cert <span class="arrow">→</span></span><div class="desc">Provisions a publisher certificate for .rdp files: self-signed, Group Policy, consent bypass.</div></a>
+      <div class="shead"><h2><span class="hash">#</span> other</h2><span class="blurb">didn't fit anywhere else</span><span class="count">1</span></div>
+      <div class="rows">
+        <a class="row" href="https://github.com/GlomarGadaffi/rdp-publisher-cert"><span class="name">rdp-publisher-cert</span><span class="desc">Stamps a publisher cert onto .rdp files — self-signed, Group Policy, and the consent prompt out of the way.</span></a>
       </div>
     </section>
+
   </main>
 
   <footer>
-    <span>Built on small boards in spare hours.</span>
-    <a href="https://github.com/GlomarGadaffi">→ all repos on GitHub</a>
+    <span class="note">Built on small boards, in spare hours, between things. If something here looks half-finished, it probably is — the code's all up there, go read it.</span>
+    <a href="https://github.com/GlomarGadaffi">all of it on GitHub →</a>
   </footer>
+
 </div>
 </body>
 </html>
