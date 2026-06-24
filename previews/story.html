@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Glomar — small radios, mostly</title>
+<meta name="description" content="Small radios, mostly. ESP32, LoRa, SIP, Meshtastic. A walk through the work, in the order it makes sense.">
+<meta property="og:title" content="Glomar">
+<meta property="og:description" content="Small radios, mostly. ESP32 · LoRa · SIP · Meshtastic.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://glomargadaffi.github.io/">
+<style>
+  :root{
+    --bg:#0c0d0f; --panel:#131619; --panel-hi:#1a1f24;
+    --ink:#e7e9ec; --muted:#9aa4ad; --faint:#646d76;
+    --line:#23282e; --rail:#2e353c;
+    --wire:#7fb2a6;          /* desaturated signal-green, no neon */
+    --wire-dim:#3a5750;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:760px; margin:0 auto; padding:clamp(2rem,5vw,4rem) clamp(1.1rem,5vw,1.8rem)}
+  .mono{font-family:"SF Mono",SFMono-Regular,ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace}
+
+  a{color:var(--wire)}
+  a:focus-visible{outline:2px solid var(--wire); outline-offset:2px; border-radius:3px}
+
+  /* --- header / the premise --- */
+  header{padding-bottom:.5rem}
+  h1{font-size:clamp(2.1rem,8vw,3rem); margin:0; letter-spacing:-.02em; font-weight:700}
+  h1 .blip{color:var(--wire)}
+  .tag{color:var(--muted); font-size:clamp(1.02rem,3vw,1.18rem); margin:.5rem 0 0}
+  .tag .cat{color:var(--faint)}
+  .premise{color:var(--muted); font-size:1rem; max-width:60ch; margin:1.3rem 0 0}
+  .premise b{color:var(--ink); font-weight:600}
+  .meta{margin-top:1.2rem; font-size:.9rem; color:var(--faint)}
+  .meta a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--wire-dim)}
+  .meta a:hover{color:var(--wire)}
+
+  /* --- the spine: a vertical rail the whole story hangs off --- */
+  main{position:relative; margin-top:2.6rem; padding-left:1.7rem}
+  main::before{
+    content:""; position:absolute; left:5px; top:.4rem; bottom:2.2rem;
+    width:1px; background:linear-gradient(var(--wire-dim),var(--rail) 60%,transparent);
+  }
+  .movement{position:relative; margin:0 0 2.9rem}
+  /* node on the rail */
+  .movement::before{
+    content:""; position:absolute; left:-1.7rem; top:.55rem;
+    width:11px; height:11px; margin-left:0; border-radius:50%;
+    background:var(--bg); border:1px solid var(--wire-dim); box-shadow:0 0 0 4px var(--bg);
+  }
+  .movement:target::before, .movement:hover::before{border-color:var(--wire); background:var(--wire-dim)}
+
+  .step{display:block; font-size:.72rem; letter-spacing:.18em; text-transform:uppercase; color:var(--faint); margin-bottom:.15rem}
+  h2{font-size:1.32rem; line-height:1.25; margin:0 0 .5rem; font-weight:650; letter-spacing:-.01em}
+  .lede{color:var(--muted); font-size:.97rem; margin:0 0 1.05rem; max-width:62ch}
+  .lede b{color:var(--ink); font-weight:600}
+  .lede code{font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace; font-size:.86em; color:var(--ink)}
+
+  /* --- a project line: reads like a sentence, links out --- */
+  .line{
+    display:flex; gap:.7rem; align-items:baseline; text-decoration:none; color:inherit;
+    padding:.42rem .55rem .42rem .15rem; border-radius:6px; border:1px solid transparent;
+    transition:background .12s ease, border-color .12s ease;
+  }
+  .line + .line{margin-top:.05rem}
+  .line:hover, .line:focus-visible{background:var(--panel); border-color:var(--line); outline:none}
+  .line:focus-visible{box-shadow:0 0 0 2px var(--wire-dim)}
+  .nm{flex:0 0 auto; color:var(--wire); font-weight:600; font-size:.95rem;
+      font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace; letter-spacing:-.01em}
+  .ds{flex:1 1 auto; color:var(--muted); font-size:.9rem; line-height:1.5}
+  .ds em{color:var(--ink); font-style:normal}        /* let a phrase point at the next repo */
+  .tag-pill{display:inline-block; font-size:.62rem; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--faint); border:1px solid var(--line); border-radius:4px; padding:.02rem .34rem; margin-left:.4rem; vertical-align:middle}
+  .arrow{flex:0 0 auto; color:var(--faint); align-self:center; font-size:.95rem; transition:color .12s, transform .12s}
+  .line:hover .arrow{color:var(--wire); transform:translateX(2px)}
+  @media (prefers-reduced-motion:reduce){.line:hover .arrow{transform:none}}
+
+  /* the "doesn't fit" coda, deliberately set apart */
+  .coda{border-top:1px solid var(--line); margin-top:.5rem; padding-top:1.6rem}
+  .coda .lede{font-size:.92rem}
+
+  footer{margin-top:2rem; padding-top:1.4rem; border-top:1px solid var(--line);
+    color:var(--faint); font-size:.86rem; display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; justify-content:space-between}
+  footer a{color:var(--muted); text-decoration:none}
+  footer a:hover{color:var(--wire)}
+
+  @media (max-width:520px){
+    .line{flex-wrap:wrap; gap:.15rem .6rem}
+    .nm{flex-basis:100%}
+    .arrow{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Glomar<span class="blip">.</span></h1>
+    <p class="tag">Small radios, mostly. <span class="cat">ESP32 · LoRa · SIP · Meshtastic.</span> And a cat, allegedly.</p>
+    <p class="premise">About <b>27 repos</b>, and they're not really 27 separate things. It's mostly one question poked at from a few sides: <b>what can a $10 board do to the air around it?</b> Talk on it, listen to it, hide on it, or stay up on it when everything else falls over. Here's the work in roughly that order. Most of these I actually run.</p>
+    <p class="meta mono">→ <a href="https://github.com/GlomarGadaffi">github.com/GlomarGadaffi</a> &nbsp;·&nbsp; vendored upstreams, synthetic demos, and paused things all say so below.</p>
+  </header>
+
+  <main>
+
+    <!-- 1 — talk on it -->
+    <section class="movement" id="phone">
+      <span class="step mono">01 — talk on it</span>
+      <h2>A phone system that fits in your hand</h2>
+      <p class="lede">It started as one ESP32 pretending to be a whole PBX. Then it needed something to call <em>from</em>, then somewhere for the calls to <em>go</em> when nobody picked up. So it grew a handset and a voicemail box. Four repos that only make sense together.</p>
+      <a class="line" href="https://github.com/GlomarGadaffi/pocket-dial">
+        <span class="nm">pocket-dial</span><span class="ds">self-contained SIP PBX on one ESP32-S3. point any SIP phone at it and <em>call</em>.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/pocket-dial-handset">
+        <span class="nm">+ handset</span><span class="ds">push-to-talk SIP handset. registers <em>to pocket-dial</em> — so now you have a phone to call from.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/pocket-dial-voicemail">
+        <span class="nm">+ voicemail</span><span class="ds">store-and-forward voicemail, <em>for when pocket-dial doesn't answer</em>.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/resiprocate">
+        <span class="nm">resiprocate</span><span class="ds">the SIP / ICE / TURN / STUN / RTP stack doing the actual work underneath. <span class="tag-pill">vendored</span></span><span class="arrow mono">→</span></a>
+    </section>
+
+    <!-- 2 — listen to it -->
+    <section class="movement" id="listen">
+      <span class="step mono">02 — listen to it</span>
+      <h2>Radios that listen, and remember what they heard</h2>
+      <p class="lede">Other people's radios are louder than mine. A police scanner spits out a serial firehose of P25 trunk traffic; on its own it's noise. So: write down <b>what the bytes mean</b>, then build the things that turn the firehose into something you can search, chart, and keep. Same move on the Meshtastic side — capture first, ask questions later.</p>
+      <a class="line" href="https://github.com/GlomarGadaffi/bcd325p2-protocol">
+        <span class="nm">bcd325p2-protocol</span><span class="ds">the serial command-protocol reference for the Uniden BCD325P2. <em>everything below stands on this.</em></span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/bcd325-splunk-addon">
+        <span class="nm">+ splunk-addon</span><span class="ds">ingest the serial RF telemetry, parse P25 / EDACS, into Splunk.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/bcd325-dashboard">
+        <span class="nm">+ dashboard</span><span class="ds">decode, visualize, and persist BCD325P2 telemetry. the human-readable end.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/p25-trunk-logger">
+        <span class="nm">p25-trunk-logger</span><span class="ds">log a P25 trunked control channel; spits out trunk-recorder configs.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/meshtap">
+        <span class="nm">meshtap</span><span class="ds">same idea, mesh side: passive Meshtastic capture to BigQuery over cellular MQTT. <em>capture now, query later.</em></span><span class="arrow mono">→</span></a>
+    </section>
+
+    <!-- 3 — talk back to it -->
+    <section class="movement" id="poke">
+      <span class="step mono">03 — talk back to it</span>
+      <h2>Radios that don't just listen</h2>
+      <p class="lede">Listening is half of it. The other half is making noise on purpose and seeing what flinches — deauth a 5&nbsp;GHz network, then build the thing that notices someone doing exactly that. Wardrive the neighborhood. Reverse a LoRa chirp. Put voice on a frequency band that was never meant for it.</p>
+      <a class="line" href="https://github.com/GlomarGadaffi/wifi-ble-marauder">
+        <span class="nm">wifi-ble-marauder</span><span class="ds">ESP-IDF Wi-Fi/BLE security tool: 5&nbsp;GHz deauth, Thread/Matter/Zigbee, BLE 5. no Arduino.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/deauth-detector">
+        <span class="nm">deauth-detector</span><span class="ds">the other side of marauder: a distributed 802.11 attack detector, <em>with a LoRa back-haul</em>.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/wigle-wardriver">
+        <span class="nm">wigle-wardriver</span><span class="ds">Wi-Fi/BLE wardriver for Wigle.net, GPS-tagged to SD.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/esp32s3-mgmt-scanner">
+        <span class="nm">esp32s3-mgmt-scanner</span><span class="ds">passive 802.11 management-frame scanner. quiet cousin of the loud ones.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/ble-sign-beacon">
+        <span class="nm">ble-sign-beacon</span><span class="ds">broadcast a short message as a BLE advertisement. deliberately visible, for once.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/lora-rf-toolkit">
+        <span class="nm">lora-rf-toolkit</span><span class="ds">LoRa reverse-engineering: sweep, I/Q capture, chirp and parameter analysis.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/fsk-walkie-talkie">
+        <span class="nm">fsk-walkie-talkie</span><span class="ds">voice-over-FSK walkie-talkie (Codec2 + SX1262). a phone again, but over raw radio.</span><span class="arrow mono">→</span></a>
+    </section>
+
+    <!-- 4 — hide on it / keep it up -->
+    <section class="movement" id="hide">
+      <span class="step mono">04 — hide on it, keep it up</span>
+      <h2>Comms that hide, or refuse to die</h2>
+      <p class="lede">If you can listen to a radio, so can everyone else — which is the whole reason this part exists. Voice that goes out over Tor instead of the air. A tiny SSH server small enough to live on the chip itself. And meshes that route around the part of the world that's on fire. Two of these are upstreams I lean on, not mine — said so.</p>
+      <a class="line" href="https://github.com/GlomarGadaffi/tor-voice">
+        <span class="nm">tor-voice</span><span class="ds">encrypted voice over Tor: in-process Arti onion service + Opus + Noise. the opposite of broadcasting.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/glossh">
+        <span class="nm">glossh</span><span class="ds">minimal SSH 2.0 server for ESP-IDF on PSA Crypto. a secure door on a $5 chip.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/esp-secure-transport">
+        <span class="nm">esp-secure-transport</span><span class="ds">MIT/PD secure-transport stack for ESP-IDF. on the shelf for now. <span class="tag-pill">paused</span></span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/reticulum">
+        <span class="nm">reticulum</span><span class="ds">cryptography-based mesh over LoRa, packet radio, serial, TCP. the won't-die layer. <span class="tag-pill">vendored</span></span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/rfparty">
+        <span class="nm">rfparty</span><span class="ds">wireless situational-awareness dashboard for BLE/Wi-Fi telemetry. <span class="tag-pill">vendored</span></span><span class="arrow mono">→</span></a>
+    </section>
+
+    <!-- 5 — the stuff that makes the rest usable -->
+    <section class="movement" id="edges">
+      <span class="step mono">05 — the stuff around the edges</span>
+      <h2>Bits that make the rest bearable</h2>
+      <p class="lede">None of the above is much fun without a screen to look at, an agent to run on the box when there's no network, and a way to ask the pile of captured data a plain-English question. The boring-but-load-bearing stuff.</p>
+      <a class="line" href="https://github.com/GlomarGadaffi/jc3248-display-driver">
+        <span class="nm">jc3248-display-driver</span><span class="ds">ESP-IDF driver + bring-up for the Guition JC3248W535EN (AXS15231B QSPI). the screen.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/esp32-ai-agent">
+        <span class="nm">esp32-ai-agent</span><span class="ds">ESP32 AI agent with persistent memory and an offline rule engine. brains when there's no internet.</span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/ask-the-logs">
+        <span class="nm">ask-the-logs</span><span class="ds">natural-language queries over BigQuery (Google ADK + Gemini). <em>this is what reads what meshtap wrote.</em></span><span class="arrow mono">→</span></a>
+    </section>
+
+    <!-- 6 — synthetic demos, honestly labeled -->
+    <section class="movement" id="demos">
+      <span class="step mono">06 — what it adds up to (on purpose)</span>
+      <h2>Two demos, made up so I don't have to use real ones</h2>
+      <p class="lede">If you stack the listening tools, a picture falls out of them that's worth thinking about. These two say out loud what that looks like — built on <b>synthetic</b> data, not real captures, so nobody real is in them. The label is the point.</p>
+      <a class="line" href="https://github.com/GlomarGadaffi/deanon-demo">
+        <span class="nm">deanon-demo</span><span class="ds">what ~$900 of commodity hardware reconstructs about multi-channel pseudonymity. <span class="tag-pill">synthetic</span></span><span class="arrow mono">→</span></a>
+      <a class="line" href="https://github.com/GlomarGadaffi/sentinel-node-demo">
+        <span class="nm">sentinel-node-demo</span><span class="ds">second- and third-order surveillance / counter-surveillance effects. <span class="tag-pill">synthetic</span></span><span class="arrow mono">→</span></a>
+    </section>
+
+    <!-- coda — the one that doesn't fit -->
+    <section class="movement coda" id="misc">
+      <span class="step mono">— doesn't fit the story</span>
+      <h2>The odd one out</h2>
+      <p class="lede">Has nothing to do with radios. Lived here before the rest did and I'm not going to pretend it belongs to a theme.</p>
+      <a class="line" href="https://github.com/GlomarGadaffi/rdp-publisher-cert">
+        <span class="nm">rdp-publisher-cert</span><span class="ds">provisions a publisher certificate for .rdp files: self-signed, Group Policy, consent bypass.</span><span class="arrow mono">→</span></a>
+    </section>
+
+  </main>
+
+  <footer>
+    <span>built on small boards in spare hours.</span>
+    <a href="https://github.com/GlomarGadaffi">→ all 27 repos on GitHub</a>
+  </footer>
+
+</div>
+</body>
+</html>
