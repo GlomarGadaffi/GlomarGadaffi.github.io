@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>the whole thing, in the order it makes sense — Glomar notes</title>
+<title>the whole thing, in the order it makes sense · Glomar notes</title>
 <meta name="description" content="What a couple dozen repos look like when you stand them in a line: talk on it, listen to it, talk back, hide on it.">
 <meta property="og:title" content="the whole thing, in the order it makes sense">
 <meta property="og:description" content="A walk through the work, in the order it makes sense.">
@@ -113,21 +113,21 @@
   <main>
 
     <section class="movement" id="phone">
-      <span class="step mono">01 — talk on it</span>
+      <span class="step mono">01 · talk on it</span>
       <h2>A phone system that fits in your hand</h2>
       <p class="lede">It started as one ESP32 pretending to be a whole PBX. Then it needed something to call <em>from</em>. So it grew a handset. Three repos that only make sense together.</p>
       <a class="line" href="https://github.com/GlomarGadaffi/pocket-dial">
         <span class="nm">pocket-dial</span><span class="ds">self-contained SIP PBX on one ESP32-S3. point any SIP phone at it and <em>call</em>.</span><span class="arrow mono">→</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/pocket-dial-handset">
-        <span class="nm">+ handset</span><span class="ds">push-to-talk SIP handset. registers <em>to pocket-dial</em> — so now you have a phone to call from.</span><span class="arrow mono">→</span></a>
+        <span class="nm">+ handset</span><span class="ds">push-to-talk SIP handset. registers <em>to pocket-dial</em>, so now you have a phone to call from.</span><span class="arrow mono">→</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/resiprocate">
         <span class="nm">resiprocate</span><span class="ds">the SIP / ICE / TURN / STUN / RTP stack doing the actual work underneath. <span class="tag-pill">vendored</span></span><span class="arrow mono">→</span></a>
     </section>
 
     <section class="movement" id="listen">
-      <span class="step mono">02 — listen to it</span>
+      <span class="step mono">02 · listen to it</span>
       <h2>Radios that listen, and remember what they heard</h2>
-      <p class="lede">Other people's radios are louder than mine. A police scanner spits out a serial firehose of P25 trunk traffic; on its own it's noise. So: write down <b>what the bytes mean</b>, then build the things that turn the firehose into something you can search, chart, and keep. Same move on the Meshtastic side — capture first, ask questions later.</p>
+      <p class="lede">Other people's radios are louder than mine. A police scanner spits out a serial firehose of P25 trunk traffic; on its own it's noise. So: write down <b>what the bytes mean</b>, then build the things that turn the firehose into something you can search, chart, and keep. Same move on the Meshtastic side: capture first, ask questions later.</p>
       <a class="line" href="https://github.com/GlomarGadaffi/bcd325p2-protocol">
         <span class="nm">bcd325p2-protocol</span><span class="ds">the serial command-protocol reference for the Uniden BCD325P2. <em>everything below stands on this.</em></span><span class="arrow mono">→</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/bcd325-splunk-addon">
@@ -141,9 +141,9 @@
     </section>
 
     <section class="movement" id="poke">
-      <span class="step mono">03 — talk back to it</span>
+      <span class="step mono">03 · talk back to it</span>
       <h2>Radios that don't just listen</h2>
-      <p class="lede">Listening is half of it. The other half is making noise on purpose and seeing what flinches — deauth a 5&nbsp;GHz network, then build the thing that notices someone doing exactly that. Wardrive the neighborhood. Reverse a LoRa chirp. Put voice on a frequency band that was never meant for it.</p>
+      <p class="lede">Listening is half of it. The other half is making noise on purpose and seeing what flinches: deauth a 5&nbsp;GHz network, then build the thing that notices someone doing exactly that. Wardrive the neighborhood. Reverse a LoRa chirp. Put voice on a frequency band that was never meant for it.</p>
       <a class="line" href="https://github.com/GlomarGadaffi/wifi-ble-marauder">
         <span class="nm">wifi-ble-marauder</span><span class="ds">ESP-IDF Wi-Fi/BLE security tool: 5&nbsp;GHz deauth, Thread/Matter/Zigbee, BLE 5. no Arduino.</span><span class="arrow mono">→</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/deauth-detector">
@@ -161,9 +161,9 @@
     </section>
 
     <section class="movement" id="hide">
-      <span class="step mono">04 — hide on it, keep it up</span>
+      <span class="step mono">04 · hide on it, keep it up</span>
       <h2>Comms that hide, or refuse to die</h2>
-      <p class="lede">If you can listen to a radio, so can everyone else — which is the whole reason this part exists. Voice that goes out over Tor instead of the air. A tiny SSH server small enough to live on the chip itself. And meshes that route around the part of the world that's on fire. Two of these are upstreams I lean on, not mine — said so.</p>
+      <p class="lede">If you can listen to a radio, so can everyone else, which is the whole reason this part exists. Voice that goes out over Tor instead of the air. A tiny SSH server small enough to live on the chip itself. And meshes that route around the part of the world that's on fire. Two of these are upstreams I lean on, not mine. Said so.</p>
       <a class="line" href="https://github.com/GlomarGadaffi/tor-voice">
         <span class="nm">tor-voice</span><span class="ds">encrypted voice over Tor: in-process Arti onion service + Opus + Noise. the opposite of broadcasting.</span><span class="arrow mono">→</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/glossh">
@@ -177,7 +177,7 @@
     </section>
 
     <section class="movement" id="edges">
-      <span class="step mono">05 — the stuff around the edges</span>
+      <span class="step mono">05 · the stuff around the edges</span>
       <h2>Bits that make the rest bearable</h2>
       <p class="lede">None of the above is much fun without a screen to look at, an agent to run on the box when there's no network, and a way to ask the pile of captured data a plain-English question. The boring-but-load-bearing stuff.</p>
       <a class="line" href="https://github.com/GlomarGadaffi/jc3248-display-driver">
@@ -189,9 +189,9 @@
     </section>
 
     <section class="movement" id="demos">
-      <span class="step mono">06 — what it adds up to (on purpose)</span>
+      <span class="step mono">06 · what it adds up to (on purpose)</span>
       <h2>Two demos, made up so I don't have to use real ones</h2>
-      <p class="lede">If you stack the listening tools, a picture falls out of them that's worth thinking about. These two say out loud what that looks like — built on <b>synthetic</b> data, not real captures, so nobody real is in them. The label is the point.</p>
+      <p class="lede">If you stack the listening tools, a picture falls out of them that's worth thinking about. These two say out loud what that looks like, built on <b>synthetic</b> data, not real captures, so nobody real is in them. The label is the point.</p>
       <a class="line" href="https://github.com/GlomarGadaffi/deanon-demo">
         <span class="nm">deanon-demo</span><span class="ds">what ~$900 of commodity hardware reconstructs about multi-channel pseudonymity. <span class="tag-pill">synthetic</span></span><span class="arrow mono">→</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/sentinel-node-demo">
@@ -199,7 +199,7 @@
     </section>
 
     <section class="movement coda" id="misc">
-      <span class="step mono">— doesn't fit the story</span>
+      <span class="step mono">doesn't fit the story</span>
       <h2>The odd one out</h2>
       <p class="lede">Has nothing to do with radios. Lived here before the rest did and I'm not going to pretend it belongs to a theme.</p>
       <a class="line" href="https://github.com/GlomarGadaffi/rdp-publisher-cert">
