@@ -94,6 +94,13 @@ h2{
 .coda{border-top:1px solid var(--line);margin-top:1.5em;padding-top:1.8em}
 .coda .lede{font-size:.92em}
 
+figure.dg{margin:1.4em 0}figure.dg div{overflow-x:auto;text-align:center}figure.dg svg{display:inline-block;max-width:100%;height:auto}
+html.inverted figure.dg{filter:invert(.93) hue-rotate(180deg)}
+figcaption{font-family:var(--mono);font-size:.75em;color:var(--ink-dim);margin-top:.6em}
+.callout{background:var(--face);border:1px solid var(--line);border-left:4px solid var(--brass);padding:1em;margin:1.4em 0;border-radius:2px}
+.callout-alert{border-left-color:var(--alert)}
+.callout h4{font-family:var(--mono);margin:0 0 .5em;font-size:.82em;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+
 @media screen and (max-width:1080px){button.ci{position:absolute}}
 @media (max-width:560px){
   .line{flex-wrap:wrap;gap:.15rem .6rem}
@@ -114,7 +121,7 @@ h2{
 
 <div class="wrap">
 
-  <nav><a href="../">&larr; Glomar</a> &middot; <a href="./">Notes</a> &middot; <a href="https://github.com/GlomarGadaffi">GitHub</a></nav>
+  <nav><a href="../">&larr; Glomar</a> &middot; <a href="../pocket-dial/">pocket-dial</a> &middot; <a href="../ESP32_AdBlocker_Reborn/">ESP32 AdBlocker</a> &middot; <a href="../bcd325-dashboard/">bcd325-dashboard</a> &middot; <a href="../deanon-demo/">deanon-demo</a> &middot; <a href="../sentinel-node-demo/">sentinel-node-demo</a> &middot; <a href="../ask-the-logs/">ask-the-logs</a> &middot; <a href="https://github.com/GlomarGadaffi">GitHub</a></nav>
 
   <header>
     <p class="st">2026-06-23 &middot; a map of the repos</p>
@@ -199,18 +206,99 @@ h2{
         <span class="nm">jc3248-display-driver</span><span class="ds">an ESP-IDF driver and bring-up for the Guition JC3248W535EN display (AXS15231B, QSPI).</span><span class="arrow">&rarr;</span></a>
       <a class="line" href="https://github.com/GlomarGadaffi/esp32-ai-agent">
         <span class="nm">esp32-ai-agent</span><span class="ds">an ESP32 AI agent with persistent memory and an offline rule engine.</span><span class="arrow">&rarr;</span></a>
-      <a class="line" href="https://github.com/GlomarGadaffi/ask-the-logs">
-        <span class="nm">ask-the-logs</span><span class="ds">natural-language queries over BigQuery, using Google ADK and Gemini. Reads the data meshtap collects.</span><span class="arrow">&rarr;</span></a>
+      <a class="line" href="../ask-the-logs/">
+        <span class="nm">ask-the-logs</span><span class="ds">natural-language queries over BigQuery, using Google ADK and Gemini. Reads across all 11 sensor pipelines.</span><span class="arrow">&rarr;</span></a>
     </section>
 
     <section class="movement" id="demos">
       <span class="step">06 &middot; demos</span>
       <h2>Two demos on synthetic data</h2>
       <p class="lede">Combining the listening tools above reveals more than any one of them does alone. These two demos show that, using <b>synthetic</b> data rather than real captures, so no real person appears in them.</p>
-      <a class="line" href="https://github.com/GlomarGadaffi/deanon-demo">
+      <a class="line" href="../deanon-demo/">
         <span class="nm">deanon-demo</span><span class="ds">what about $900 of commodity hardware can reconstruct about a person using several pseudonymous channels. <span class="tag-pill">synthetic</span></span><span class="arrow">&rarr;</span></a>
-      <a class="line" href="https://github.com/GlomarGadaffi/sentinel-node-demo">
+      <a class="line" href="../sentinel-node-demo/">
         <span class="nm">sentinel-node-demo</span><span class="ds">second- and third-order effects of surveillance and counter-surveillance. <span class="tag-pill">synthetic</span></span><span class="arrow">&rarr;</span></a>
+    </section>
+
+    <section class="movement" id="synthesis">
+      <span class="step">07 &middot; the synthesis</span>
+      <h2>Architecture, legality, and the synthetic firebreak</h2>
+      <p class="lede">
+        Why the stack connects together, why the data is synthetic, and why the firing pin is deliberately removed.
+      </p>
+
+      <figure class="dg">
+        <div>
+          <svg viewBox="0 0 760 370" width="760" height="370" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <marker id="ar" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 1 L 10 5 L 0 9 z" fill="#454545"/>
+              </marker>
+            </defs>
+            <rect x="10" y="10" width="740" height="350" fill="#fcfcfc" stroke="#ddd" stroke-width="1.5" rx="3"/>
+
+            <!-- Tier 1: Sensors -->
+            <text x="35" y="38" font-family="ui-monospace, monospace" font-size="10" font-weight="700" fill="#777" letter-spacing="1">TIER 1 &middot; PHYSICAL SENSORS &amp; EDGE INGEST</text>
+            <rect x="35" y="50" width="165" height="42" fill="#fff" stroke="#bbb" rx="2"/>
+            <text x="45" y="68" font-family="ui-monospace, monospace" font-size="10.5" font-weight="700" fill="#07a">bcd325-dashboard</text>
+            <text x="45" y="82" font-family="ui-monospace, monospace" font-size="9" fill="#777">P25/EDACS RF hits</text>
+
+            <rect x="215" y="50" width="165" height="42" fill="#fff" stroke="#bbb" rx="2"/>
+            <text x="225" y="68" font-family="ui-monospace, monospace" font-size="10.5" font-weight="700" fill="#07a">meshtap</text>
+            <text x="225" y="82" font-family="ui-monospace, monospace" font-size="9" fill="#777">LoRa mesh packets</text>
+
+            <rect x="395" y="50" width="165" height="42" fill="#fff" stroke="#bbb" rx="2"/>
+            <text x="405" y="68" font-family="ui-monospace, monospace" font-size="10.5" font-weight="700" fill="#07a">wardriver / rfparty</text>
+            <text x="405" y="82" font-family="ui-monospace, monospace" font-size="9" fill="#777">WiFi BSSID + BLE</text>
+
+            <rect x="575" y="50" width="150" height="42" fill="#fff" stroke="#bbb" rx="2"/>
+            <text x="585" y="68" font-family="ui-monospace, monospace" font-size="10.5" font-weight="700" fill="#07a">ADS-B / Rayhunter</text>
+            <text x="585" y="82" font-family="ui-monospace, monospace" font-size="9" fill="#c0392b">[SYNTHETIC VECTORS]</text>
+
+            <!-- Arrows down to Processing -->
+            <line x1="117" y1="92" x2="117" y2="125" stroke="#454545" stroke-width="1.2" marker-end="url(#ar)"/>
+            <line x1="297" y1="92" x2="297" y2="125" stroke="#454545" stroke-width="1.2" marker-end="url(#ar)"/>
+            <line x1="477" y1="92" x2="477" y2="125" stroke="#454545" stroke-width="1.2" marker-end="url(#ar)"/>
+            <line x1="650" y1="92" x2="650" y2="125" stroke="#454545" stroke-width="1.2" marker-end="url(#ar)"/>
+
+            <!-- Tier 2: Real-time Threat & Correlation -->
+            <rect x="35" y="130" width="345" height="65" fill="#f4f4f4" stroke="#07a" rx="2"/>
+            <text x="45" y="152" font-family="ui-monospace, monospace" font-size="11" font-weight="700" fill="#07a">sentinel-node-demo</text>
+            <text x="45" y="168" font-family="ui-monospace, monospace" font-size="9" fill="#333">Salience Engine S(t) = w_t&middot;T_d + w_a&middot;A_p + w_m&middot;M_v</text>
+            <text x="45" y="182" font-family="ui-monospace, monospace" font-size="8.5" fill="#777">FSM: LISTENING &harr; DEFENDING &middot; Decoy models</text>
+
+            <rect x="395" y="130" width="330" height="65" fill="#f4f4f4" stroke="#07a" rx="2"/>
+            <text x="405" y="152" font-family="ui-monospace, monospace" font-size="11" font-weight="700" fill="#07a">deanon-demo (Mirkwood)</text>
+            <text x="405" y="168" font-family="ui-monospace, monospace" font-size="9" fill="#333">Cross-Channel Spatiotemporal Normalizer</text>
+            <text x="405" y="182" font-family="ui-monospace, monospace" font-size="8.5" fill="#777">SHA-256 device_fingerprint &middot; emission_events</text>
+
+            <!-- Arrows to Lakehouse -->
+            <line x1="207" y1="195" x2="350" y2="225" stroke="#454545" stroke-width="1.2" marker-end="url(#ar)"/>
+            <line x1="560" y1="195" x2="410" y2="225" stroke="#454545" stroke-width="1.2" marker-end="url(#ar)"/>
+
+            <!-- Tier 3: BigQuery -->
+            <rect x="180" y="230" width="400" height="42" fill="#fff" stroke="#bbb" rx="2"/>
+            <text x="210" y="250" font-family="ui-monospace, monospace" font-size="10.5" font-weight="700" fill="#454545">BIGQUERY SENSOR LAKEHOUSE (11 DATASETS)</text>
+            <text x="210" y="263" font-family="ui-monospace, monospace" font-size="8.5" fill="#777">Tier 1 Native Tables &plus; Tier 2 Mirkwood Unified Events</text>
+
+            <!-- Arrow to Cognitive Peak -->
+            <line x1="380" y1="272" x2="380" y2="295" stroke="#454545" stroke-width="1.2" marker-end="url(#ar)"/>
+
+            <!-- Tier 4: Ask the Logs -->
+            <rect x="130" y="300" width="500" height="50" fill="#f8f8f8" stroke="#07a" stroke-width="1.5" rx="3"/>
+            <text x="150" y="322" font-family="ui-monospace, monospace" font-size="11.5" font-weight="700" fill="#07a">ask-the-logs (COGNITIVE ANALYST LAYER)</text>
+            <text x="150" y="338" font-family="ui-monospace, monospace" font-size="9" fill="#454545">Google ADK &plus; Gemini: Natural language queries &rarr; Standard SQL &rarr; SSE streamed synthesis</text>
+          </svg>
+        </div>
+        <figcaption>Figure: The 4-tier Glomar intelligence pipeline spanning edge capture to cognitive LLM synthesis.</figcaption>
+      </figure>
+
+      <div class="callout callout-alert">
+        <h4>The Permanent Firebreak: Why It Is Left Broken</h4>
+        <p style="margin:0;font-size:.92em;line-height:1.5">
+          These tools demonstrate <b>reconstruction parity, not operational parity</b>. The hardware PCB files, RF transmission firmware, automated field collectors, and real target frequencies are deliberately withheld. In a dense transit hub or hotel parking lot, cross-channel correlation produces ~125 coincidental locks per 5-minute window; acting on raw locks in real time guarantees collateral harm to innocent civilians. Leaving the operational pipeline broken is what protects civil liberties and keeps the research lawful under federal wiretap, CFAA, and export standards.
+        </p>
+      </div>
     </section>
 
     <section class="movement coda" id="misc">
