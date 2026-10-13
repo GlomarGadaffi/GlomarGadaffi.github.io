@@ -39,6 +39,9 @@ p.st{margin-top:0;color:var(--ink-dim);font-style:italic}
 .premise{color:var(--ink-dim);font-size:1.02em;max-width:64ch;margin:1.2em 0 0;line-height:1.55}
 .premise b{color:var(--ink);font-weight:600}
 nav{font-family:var(--mono);font-size:.8em;letter-spacing:.04em;color:var(--ink-dim);margin-bottom:1.5em}
+.toc{font-family:var(--mono);font-size:.78em;margin:1.4em 0 0;padding:.6em 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:flex;flex-wrap:wrap;gap:.4em 1em;color:var(--ink-dim)}
+.toc a{color:var(--brass);text-decoration:none}
+.toc a:hover{text-decoration:underline}
 footer{margin-top:3em;padding-top:1em;border-top:1px solid var(--line);font-size:.85em;color:var(--ink-dim);display:flex;flex-wrap:wrap;gap:.4em 1.4em;justify-content:space-between}
 button.ci{
   cursor:pointer;position:fixed;right:10px;font-family:var(--mono);font-size:.7em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:var(--face-raised);border:1px solid var(--line);border-radius:2px;padding:4px 8px;z-index:100;
@@ -121,7 +124,7 @@ figcaption{font-family:var(--mono);font-size:.75em;color:var(--ink-dim);margin-t
 
 <div class="wrap">
 
-  <nav><a href="../">&larr; Glomar</a> &middot; <a href="../pocket-dial/">pocket-dial</a> &middot; <a href="../ESP32_AdBlocker_Reborn/">ESP32 AdBlocker</a> &middot; <a href="../bcd325-dashboard/">bcd325-dashboard</a> &middot; <a href="../glossh/">glossh</a> &middot; <a href="../wifi-ble-marauder/">wifi-ble-marauder</a> &middot; <a href="../ble-sign-beacon/">ble-sign-beacon</a> &middot; <a href="../deanon-demo/">deanon-demo</a> &middot; <a href="../sentinel-node-demo/">sentinel-node-demo</a> &middot; <a href="../ask-the-logs/">ask-the-logs</a> &middot; <a href="https://github.com/GlomarGadaffi">GitHub</a></nav>
+  <nav><a href="../">&larr; Glomar</a> &middot; <a href="./">Field Notes</a> &middot; <a href="https://github.com/GlomarGadaffi">GitHub</a></nav>
 
   <header>
     <p class="st">2026-06-23 &middot; a map of the repos</p>
@@ -130,6 +133,15 @@ figcaption{font-family:var(--mono);font-size:.75em;color:var(--ink-dim);margin-t
       About two dozen repos, almost all of them small radio and networking projects on cheap microcontrollers.
       <b>Most of it is firmware for the ESP32 family.</b> This page groups them by what they do: a phone system, tools that listen to radio traffic, tools that transmit, private and resilient comms, and the supporting pieces. Most of these run in daily use.
     </p>
+    <nav class="toc" aria-label="Section jump list">
+      <a href="#phone">01 Phone</a> &middot;
+      <a href="#listen">02 Receiving</a> &middot;
+      <a href="#poke">03 Probing</a> &middot;
+      <a href="#hide">04 Comms</a> &middot;
+      <a href="#edges">05 Supporting</a> &middot;
+      <a href="#demos">06 Demos</a> &middot;
+      <a href="#synthesis">07 Synthesis</a>
+    </nav>
   </header>
 
   <main>
@@ -222,7 +234,7 @@ figcaption{font-family:var(--mono);font-size:.75em;color:var(--ink-dim);margin-t
       <span class="step">07 &middot; the synthesis</span>
       <h2>Architecture, legality, and the synthetic firebreak</h2>
       <p class="lede">
-        Why the stack connects together, why the data is synthetic, and why the firing pin is deliberately removed.
+        <b>Reference architecture:</b> how the sensor, correlation, storage, and analyst components can connect. The correlation paths shown here use synthetic data and are not a deployed collection system.
       </p>
 
       <figure class="dg">
@@ -288,13 +300,19 @@ figcaption{font-family:var(--mono);font-size:.75em;color:var(--ink-dim);margin-t
             <text x="150" y="338" font-family="ui-monospace, monospace" font-size="9" fill="#454545">Google ADK &plus; Gemini: Natural language queries &rarr; Standard SQL &rarr; SSE streamed synthesis</text>
           </svg>
         </div>
-        <figcaption>Figure: The 4-tier Glomar intelligence pipeline spanning edge capture to cognitive LLM synthesis.</figcaption>
+        <figcaption>Figure: Reference architecture for the Glomar research stack: edge telemetry &rarr; bounded, synthetic correlation models &rarr; BigQuery datasets &rarr; natural-language analysis. Not an operational collection pipeline.</figcaption>
+        <p style="font-size:.82em;color:var(--ink-dim);margin:.6em 0 1.2em;line-height:1.45;text-align:left">
+          <em>Salience model legend:</em> The illustrative score \(S(t) = w_t \cdot T_d + w_a \cdot A_p + w_m \cdot M_v\) combines time-decay (\(T_d\)), anomaly persistence (\(A_p\)), and movement/visibility (\(M_v\)) signals; weights are scenario-specific and intentionally illustrative rather than operational parameters.
+        </p>
       </figure>
 
       <div class="callout callout-alert">
         <h4>The Permanent Firebreak: Why It Is Left Broken</h4>
         <p style="margin:0;font-size:.92em;line-height:1.5">
-          These tools demonstrate <b>reconstruction parity, not operational parity</b>. The hardware PCB files, RF transmission firmware, automated field collectors, and real target frequencies are deliberately withheld. In a dense transit hub or hotel parking lot, cross-channel correlation produces ~125 coincidental locks per 5-minute window; acting on raw locks in real time guarantees collateral harm to innocent civilians. Leaving the operational pipeline broken is what protects civil liberties and keeps the research lawful under federal wiretap, CFAA, and export standards.
+          These tools demonstrate <b>reconstruction parity, not operational parity</b>. The hardware PCB files, RF transmission firmware, automated field collectors, and real target frequencies are deliberately withheld. In the synthetic transit-hub and hotel scenarios modeled for these demos (dense civilian RF emitters across 5-minute observation windows), multi-channel correlation produces roughly 125 coincidental candidate locks per window; acting on raw co-presence in real time guarantees collateral harm to innocent civilians.
+        </p>
+        <p style="margin:.8em 0 0;font-size:.92em;line-height:1.5">
+          The boundary is designed to reduce misuse risk and to keep the public demonstration focused on lawful, synthetic-data research. Actual legal obligations depend on jurisdiction, deployment facts, authorizations, spectrum rules, and how data is collected or handled.
         </p>
       </div>
     </section>
