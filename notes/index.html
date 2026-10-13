@@ -3,64 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>notes · Glomar</title>
+<meta name="color-scheme" content="light dark">
+<title>notes · glomar</title>
 <meta name="description" content="Occasional writing about small radios and what they get up to.">
-<meta property="og:title" content="Glomar · notes">
+<meta property="og:title" content="glomar · notes">
 <meta property="og:description" content="Occasional writing about small radios and what they get up to.">
 <meta property="og:type" content="website">
 <style>
-  :root{
-    --bg:#0c0d0f; --panel:#131619;
-    --ink:#e7e9ec; --muted:#9aa4ad; --faint:#646d76;
-    --line:#23282e;
-    --wire:#7fb2a6; --wire-dim:#3a5750;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font:16px/1.62 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  .wrap{max-width:760px; margin:0 auto; padding:clamp(2rem,5vw,4rem) clamp(1.1rem,5vw,1.8rem)}
-  .mono{font-family:"SF Mono",SFMono-Regular,ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace}
-  a{color:var(--wire)}
-  a:focus-visible{outline:2px solid var(--wire); outline-offset:2px; border-radius:3px}
+/* Layout and type borrowed from the Switchboard design system; the palette stays plain. */
+:root{
+  --bg:#fefefe;--face:#f4f4f4;--face-raised:#f0f0f0;--ink:#454545;--ink-dim:#777;--brass:#07a;--brass-hi:#07a;--brass-lo:#999;--line:#ddd;--alert:#c0392b;--ringing:#941352;
+  --mono:ui-monospace,"SF Mono","Cascadia Code","Consolas","Liberation Mono",monospace;--sans:"Open Sans",Arial,sans-serif;
+}
+html.inverted{
+  --bg:#000;--face:#111;--face-raised:#000;--ink:#d9d9d9;--ink-dim:#999;--brass:#00a2e7;--brass-hi:#00a2e7;--brass-lo:#555;--line:#333;--alert:#d24637;--ringing:#ca1a70;
+}
+html.contrast{
+  --ink:#050505;--ink-dim:#333;--brass:#03f;--brass-hi:#03f;--line:#bbb;--alert:#800;
+}
+html.inverted.contrast{
+  --ink:#fff;--ink-dim:#ccc;--brass:#44c7ff;--brass-hi:#44c7ff;--line:#666;--alert:#db695d;
+}
+html{background:var(--bg)}
+body{
+  font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:15px;margin:2em auto;max-width:800px;padding:1em;line-height:1.55;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word;
+}
+a{color:var(--brass);text-underline-offset:.15em}a:visited{color:var(--ringing)}
+h1{
+  font-family:var(--mono);font-weight:700;font-size:1.9em;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);line-height:1.2;margin:0 0 .3em;
+}
+h1 .dot{font-style:normal;color:var(--ink-dim)}
+h1 span{color:var(--ink-dim);font-weight:400;font-size:.55em;letter-spacing:.2em;margin-left:.6em;vertical-align:middle}
+p.st{margin-top:0;color:var(--ink-dim);font-style:italic}
+nav{font-family:var(--mono);font-size:.8em;letter-spacing:.04em;color:var(--ink-dim);margin-bottom:1.5em}
+footer{margin-top:3em;padding-top:1em;border-top:1px solid var(--line);font-size:.85em;color:var(--ink-dim);display:flex;flex-wrap:wrap;gap:.4em 1.4em;justify-content:space-between}
+button.ci{
+  cursor:pointer;position:fixed;right:10px;font-family:var(--mono);font-size:.7em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:var(--face-raised);border:1px solid var(--line);border-radius:2px;padding:4px 8px;z-index:100;
+}
+button.ci:hover{border-color:var(--ink-dim)}
+#contrast{top:10px}#invmode{top:40px}
 
-  .topnav{font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace;
-    font-size:.8rem; margin:0 0 1.9rem; color:var(--faint)}
-  .topnav a{color:var(--muted); text-decoration:none; border-bottom:1px solid var(--wire-dim)}
-  .topnav a:hover{color:var(--wire)}
+.posts{list-style:none;margin:1.8em 0;padding:0}
+.post{padding:1.4em 0;border-bottom:1px solid var(--line)}
+.post:first-child{border-top:1px solid var(--line)}
+.post .date{
+  font-family:var(--mono);font-size:.75em;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim);margin:0 0 .4em;
+}
+.post h2{
+  font-family:var(--mono);font-size:1.15em;font-weight:600;letter-spacing:.02em;margin:0;border-bottom:none;padding-bottom:0;text-transform:none;
+}
+.post h2 a{text-decoration:none;color:var(--ink)}
+.post h2 a:hover{color:var(--brass)}
+.post .dek{color:var(--ink-dim);font-size:.92em;margin:.45em 0 0;max-width:62ch;line-height:1.5}
 
-  header{margin-bottom:2.4rem}
-  h1{font-size:clamp(2rem,7vw,2.8rem); margin:0; letter-spacing:-.02em; font-weight:700}
-  h1 .blip{color:var(--wire)}
-  .intro{color:var(--muted); font-size:1.02rem; max-width:58ch; margin:1rem 0 0}
-
-  .posts{list-style:none; margin:0; padding:0}
-  .post{padding:1.3rem 0; border-bottom:1px solid var(--line)}
-  .post:first-child{border-top:1px solid var(--line)}
-  .post .date{font-family:"SF Mono",SFMono-Regular,ui-monospace,Menlo,Consolas,monospace;
-    font-size:.72rem; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); margin:0 0 .4rem}
-  .post h2{font-size:1.18rem; margin:0; line-height:1.3; font-weight:650; letter-spacing:-.01em}
-  .post h2 a{text-decoration:none; color:var(--ink)}
-  .post h2 a:hover,.post h2 a:focus-visible{color:var(--wire)}
-  .post .dek{color:var(--muted); font-size:.93rem; margin:.45rem 0 0; max-width:60ch; line-height:1.5}
-
-  footer{margin-top:3rem; padding-top:1.4rem; border-top:1px solid var(--line);
-    color:var(--faint); font-size:.86rem; display:flex; flex-wrap:wrap; gap:.4rem 1.4rem; justify-content:space-between}
-  footer a{color:var(--muted); text-decoration:none}
-  footer a:hover{color:var(--wire)}
+@media screen and (max-width:1080px){button.ci{position:absolute}}
+@media screen and (max-width:500px){
+  h1{font-size:1.5em;letter-spacing:.08em}
+  h1 span{display:block;margin:.3em 0 0}
+}
 </style>
 </head>
 <body>
+<button class="ci" id="contrast" type="button">Contrast</button>
+<button class="ci" id="invmode" type="button">Invert</button>
+
 <div class="wrap">
 
-  <nav class="topnav"><a href="../">← glomar</a></nav>
+  <nav><a href="../">&larr; Glomar</a> &middot; <a href="https://github.com/GlomarGadaffi">GitHub</a></nav>
 
   <header>
-    <h1>notes<span class="blip">.</span></h1>
-    <p class="intro">Occasional writing about small radios and what they get up to. Sparse on purpose. I'd rather ship than blog.</p>
+    <h1>glomar<i class="dot">&middot;</i>field notes<span>dispatch</span></h1>
+    <p class="st">Occasional writing about small radios and what they get up to. Sparse on purpose. I'd rather ship than blog.</p>
   </header>
 
   <main>
@@ -75,9 +88,20 @@
 
   <footer>
     <span>built on small boards in spare hours.</span>
-    <a href="https://github.com/GlomarGadaffi">all of it on GitHub →</a>
+    <a href="https://github.com/GlomarGadaffi">all of it on GitHub &rarr;</a>
   </footer>
 
 </div>
+
+<script>
+(function(){
+ var h=document.documentElement;
+ function load(k){try{return localStorage.getItem(k)==="1"}catch(e){return false}}
+ function save(k,v){try{localStorage.setItem(k,v?"1":"0")}catch(e){}}
+ [["contrast","pd-contrast"],["inverted","pd-inverted"]].forEach(function(p){if(load(p[1]))h.classList.add(p[0])});
+ document.getElementById("contrast").onclick=function(){save("pd-contrast",h.classList.toggle("contrast"))};
+ document.getElementById("invmode").onclick=function(){save("pd-inverted",h.classList.toggle("inverted"))};
+})();
+</script>
 </body>
 </html>

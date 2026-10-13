@@ -3,128 +3,119 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Glomar · small radios, mostly</title>
+<meta name="color-scheme" content="light dark">
+<title>glomar · small radios, mostly</title>
 <meta name="description" content="A solo embedded/RF hacker. ESP32, LoRa, SIP, Meshtastic, P25. Small wireless things that mostly work.">
-<meta property="og:title" content="Glomar">
+<meta property="og:title" content="glomar">
 <meta property="og:description" content="Small radios, mostly. ESP32 · LoRa · SIP · Meshtastic. And a cat, allegedly.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://glomargadaffi.github.io/">
 <style>
-  :root{
-    /* warm near-black, parchment ink, one desaturated ember signal */
-    --bg:#15140f;
-    --bg-row:#1b1a14;
-    --ink:#e9e3d4;        /* parchment-warm, not blue-white */
-    --muted:#a39c87;      /* AA text: 6.7:1 on bg, 6.4:1 on row */
-    --faint:#8f8976;      /* AA text: 5.3:1 on bg, 5.0:1 on row */
-    --rule:#322f25;
-    --signal:#cf8a5b;     /* desaturated rust/ember, used rarely */
-    --signal-dim:#6e5238;
-    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
-    --mono:"SF Mono",SFMono-Regular,ui-monospace,"Cascadia Code","JetBrains Mono",Menlo,Consolas,monospace;
-  }
-  *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
-  body{
-    margin:0; background:var(--bg); color:var(--ink);
-    font:15px/1.6 var(--sans);
-    -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
-  }
-  .wrap{max-width:880px; margin:0 auto; padding:clamp(2.2rem,6vw,5rem) clamp(1.15rem,4vw,2rem)}
+/* Layout and type borrowed from the Switchboard design system; the palette stays plain. */
+:root{
+  --bg:#fefefe;--face:#f4f4f4;--face-raised:#f0f0f0;--ink:#454545;--ink-dim:#777;--brass:#07a;--brass-hi:#07a;--brass-lo:#999;--line:#ddd;--alert:#c0392b;--ringing:#941352;--ok:#1a7f37;--warn:#b58900;
+  --mono:ui-monospace,"SF Mono","Cascadia Code","Consolas","Liberation Mono",monospace;--sans:"Open Sans",Arial,sans-serif;
+}
+html.inverted{
+  --bg:#000;--face:#111;--face-raised:#000;--ink:#d9d9d9;--ink-dim:#999;--brass:#00a2e7;--brass-hi:#00a2e7;--brass-lo:#555;--line:#333;--alert:#d24637;--ringing:#ca1a70;--ok:#5fd377;--warn:#e3b341;
+}
+html.contrast{
+  --ink:#050505;--ink-dim:#333;--brass:#03f;--brass-hi:#03f;--line:#bbb;--alert:#800;
+}
+html.inverted.contrast{
+  --ink:#fff;--ink-dim:#ccc;--brass:#44c7ff;--brass-hi:#44c7ff;--line:#666;--alert:#db695d;
+}
+html{background:var(--bg)}
+body{
+  font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:15px;margin:2em auto;max-width:800px;padding:1em;line-height:1.55;hyphens:auto;-webkit-hyphens:auto;overflow-wrap:break-word;
+}
+a{color:var(--brass);text-underline-offset:.15em}a:visited{color:var(--ringing)}
+h1{
+  font-family:var(--mono);font-weight:700;font-size:1.9em;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);line-height:1.2;margin:0 0 .3em;
+}
+h1 .dot{font-style:normal;color:var(--ink-dim)}
+h1 span{color:var(--ink-dim);font-weight:400;font-size:.55em;letter-spacing:.2em;margin-left:.6em;vertical-align:middle}
+h2{
+  font-family:var(--mono);font-weight:600;font-size:.85em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);margin:2.4em 0 .8em;padding-bottom:.4em;border-bottom:1px solid var(--line);
+  display:flex;align-items:baseline;justify-content:space-between;gap:1em;
+}
+h2 .blurb{font-family:var(--sans);font-size:.85em;font-weight:400;letter-spacing:normal;text-transform:none;color:var(--ink-dim)}
+h2 .count{font-family:var(--mono);font-size:.8em;color:var(--ink-dim);margin-left:auto}
+p.st{margin-top:0;color:var(--ink-dim);font-style:italic}
+.lede{font-size:1.05em;line-height:1.5;color:var(--ink);margin:1.2em 0 0}
+.lede .stack{font-family:var(--mono);font-size:.9em;color:var(--ink-dim)}
+.lede .cat{color:var(--ink-dim)}
+.meta{margin:1em 0 2em;font-size:.92em;color:var(--ink-dim);line-height:1.6}
+.meta a{font-family:var(--mono);font-size:.92em}
+b{color:var(--ink)}
+code,pre{font-family:var(--mono);font-size:.9em}
+pre{overflow-x:auto;padding:.7em .9em;background:var(--face);border:1px solid var(--line);border-left:3px solid #ccc;border-radius:2px}
+pre code{color:var(--ink)}
+nav{font-family:var(--mono);font-size:.8em;letter-spacing:.04em;color:var(--ink-dim);margin-bottom:1.5em}
+footer{margin-top:3em;padding-top:1em;border-top:1px solid var(--line);font-size:.85em;color:var(--ink-dim)}
+button.ci{
+  cursor:pointer;position:fixed;right:10px;font-family:var(--mono);font-size:.7em;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);background:var(--face-raised);border:1px solid var(--line);border-radius:2px;padding:4px 8px;z-index:100;
+}
+button.ci:hover{border-color:var(--ink-dim)}
+#contrast{top:10px}#invmode{top:40px}
 
-  /* ---- hero: plain, naked, confident ---- */
-  header{margin-bottom:clamp(2.6rem,6vw,4rem)}
-  .who{font-family:var(--mono); font-size:.72rem; letter-spacing:.22em; text-transform:uppercase;
-       color:var(--faint); margin:0 0 1.1rem}
-  h1{font-size:clamp(2.4rem,9vw,4.2rem); line-height:.98; letter-spacing:-.03em;
-     font-weight:680; margin:0; color:var(--ink)}
-  .lede{font-size:clamp(1.05rem,2.8vw,1.28rem); line-height:1.5; color:var(--ink);
-        max-width:44ch; margin:1.4rem 0 0; font-weight:420}
-  .lede .stack{font-family:var(--mono); font-size:.86em; color:var(--muted); letter-spacing:-.01em}
-  .lede .cat{color:var(--faint)}
-  .meta{margin-top:1.5rem; font-size:.9rem; color:var(--muted); max-width:56ch; line-height:1.6}
-  .meta a{color:var(--ink); text-decoration:none; border-bottom:1px solid var(--signal-dim);
-          padding-bottom:1px; font-family:var(--mono); font-size:.92em}
-  .meta a:hover,.meta a:focus-visible{border-bottom-color:var(--signal); color:var(--signal); outline:none}
-  .meta .flag{font-family:var(--mono); font-size:.85em; color:var(--faint); white-space:nowrap}
-  .meta .flag b{font-weight:400; color:var(--signal)}
+/* Manifest rows */
+.rows{display:block;margin:.4em 0}
+a.row{
+  display:grid;grid-template-columns:minmax(12rem,15rem) 1fr;gap:.2rem 1.4rem;align-items:baseline;
+  text-decoration:none;color:inherit;padding:.6rem .7rem;margin:0 -.7rem;border-radius:3px;
+  border-left:2px solid transparent;transition:background .1s ease,border-color .1s ease;
+}
+a.row:hover,a.row:focus-visible{
+  background:var(--face);border-left-color:var(--brass);outline:none;
+}
+a.row:visited .name{color:var(--ringing)}
+.name{font-family:var(--mono);font-size:.92em;font-weight:600;color:var(--ink);letter-spacing:-.01em;word-break:break-word}
+a.row:hover .name,a.row:focus-visible .name{color:var(--brass)}
+.desc{color:var(--ink-dim);font-size:.9em;line-height:1.45}
+.flag{font-family:var(--mono);font-size:.78em;color:var(--ink-dim);white-space:nowrap}
+.flag b{font-weight:600;color:var(--brass)}
+.flag.paused b{color:var(--alert)}
 
-  /* ---- sections: lowercase comment markers + a dry blurb ---- */
-  section{margin:0 0 clamp(1.9rem,4vw,2.6rem)}
-  .shead{display:flex; align-items:baseline; gap:.7rem; margin:0 0 .35rem;
-         padding-bottom:.45rem; border-bottom:1px solid var(--rule)}
-  .shead h2{font-family:var(--mono); font-size:.82rem; font-weight:500; letter-spacing:.01em;
-            color:var(--muted); margin:0; text-transform:none; white-space:nowrap}
-  .shead h2 .hash{color:var(--faint)}
-  .blurb{font-family:var(--sans); font-size:.8rem; font-weight:400; color:var(--faint);
-         line-height:1.3}
-  .count{font-family:var(--mono); font-size:.7rem; color:var(--faint); margin-left:auto; white-space:nowrap}
-
-  /* ---- the manifest: rows, not cards ---- */
-  .rows{display:block}
-  a.row{
-    display:grid;
-    grid-template-columns:minmax(11.5rem,15rem) 1fr;
-    gap:.2rem 1.5rem; align-items:baseline;
-    text-decoration:none; color:inherit;
-    padding:.62rem .7rem .62rem .55rem; margin:0 -.7rem 0 -.55rem;
-    border-radius:4px;
-    border-left:2px solid transparent;
-    transition:background .12s ease, border-color .12s ease;
-  }
-  a.row:hover,a.row:focus-visible{
-    background:var(--bg-row); border-left-color:var(--signal); outline:none;
-  }
-  a.row:focus-visible{box-shadow:0 0 0 1px var(--signal-dim)}
-  .name{font-family:var(--mono); font-size:.92rem; color:var(--ink); font-weight:500;
-        letter-spacing:-.01em; word-break:break-word}
-  a.row:hover .name,a.row:focus-visible .name{color:var(--signal)}
-  .desc{color:var(--muted); font-size:.9rem; line-height:1.45}
-  .flag{display:inline; font-family:var(--mono); font-size:.78em; color:var(--faint);
-        white-space:nowrap}
-  .flag b{font-weight:400; color:var(--signal)}
-
-  /* ---- footer ---- */
-  footer{margin-top:clamp(2.6rem,6vw,4rem); padding-top:1.4rem; border-top:1px solid var(--rule);
-         display:flex; flex-wrap:wrap; gap:.7rem 1.4rem; justify-content:space-between;
-         align-items:baseline; font-size:.85rem}
-  footer .note{color:var(--faint); max-width:54ch; line-height:1.55}
-  footer a{color:var(--muted); text-decoration:none; font-family:var(--mono); font-size:.92em; white-space:nowrap}
-  footer a:hover,footer a:focus-visible{color:var(--signal); outline:none}
-
-  @media (max-width:620px){ .blurb{display:none} }
-  @media (max-width:560px){
-    a.row{grid-template-columns:1fr; gap:.25rem; padding:.7rem .55rem}
-  }
-  @media (prefers-reduced-motion:reduce){
-    a.row{transition:none}
-  }
+@media screen and (max-width:1080px){button.ci{position:absolute}}
+@media (max-width:620px){h2 .blurb{display:none}}
+@media (max-width:560px){
+  a.row{grid-template-columns:1fr;gap:.25rem;padding:.65rem .45rem}
+  h1{font-size:1.5em;letter-spacing:.08em}
+  h1 span{display:block;margin:.3em 0 0}
+}
+@media (prefers-reduced-motion:reduce){
+  a.row{transition:none}
+}
 </style>
 </head>
 <body>
+<button class="ci" id="contrast" type="button">Contrast</button>
+<button class="ci" id="invmode" type="button">Invert</button>
+
 <div class="wrap">
 
+  <nav><a href="https://github.com/GlomarGadaffi">GitHub</a> &middot; <a href="notes/">Field Notes &rarr;</a> &middot; <a href="pocket-dial/">pocket-dial</a> &middot; <a href="ESP32_AdBlocker_Reborn/">ESP32 AdBlocker</a></nav>
+
   <header>
-    <p class="who">Glomar</p>
-    <h1>small radios,<br>mostly.</h1>
+    <h1>glomar<i class="dot">&middot;</i>small radios<i class="dot">&middot;</i>mostly<span>manifest</span></h1>
     <p class="lede">
-      I build little wireless things on ESP32 (<span class="stack">SIP, LoRa, Meshtastic,</span>
-      the occasional police scanner) and ship them before they're done.
-      <span class="cat">And a cat, allegedly.</span>
+      I build little wireless things on ESP32 (<span class="stack">SIP, LoRa, Meshtastic, the occasional police scanner</span>)
+      and ship them before they're done. <span class="cat">And a cat, allegedly.</span>
     </p>
     <p class="meta">
       Most of it is stuff I actually run in the field. Where I'm leaning on someone else's code
       it says <span class="flag">[<b>vendored</b>]</span>, where the data's made up
       <span class="flag">[<b>synthetic</b>]</span>, where I got bored
-      <span class="flag">[<b>paused</b>]</span>. No surprises.
-      <br><a href="https://github.com/GlomarGadaffi">github.com/GlomarGadaffi</a> · a couple dozen of these, give or take · <a href="notes/">notes →</a>
+      <span class="flag paused">[<b>paused</b>]</span>. No surprises.
+      <br><a href="https://github.com/GlomarGadaffi">github.com/GlomarGadaffi</a> &middot; a couple dozen of these, give or take &middot; <a href="notes/">notes &rarr;</a>
     </p>
   </header>
 
   <main>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> telephony</h2><span class="blurb">a phone network on a chip you can lose in a drawer</span><span class="count">3</span></div>
+      <h2>telephony <span class="blurb">a phone network on a chip you can lose in a drawer</span><span class="count">3</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/pocket-dial"><span class="name">pocket-dial</span><span class="desc">A whole SIP PBX on one ESP32-S3. Aim a phone at it, dial, talk. No server in a closet somewhere.</span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/tincan"><span class="name">tincan</span><span class="desc">Push-to-talk SIP handset that registers to pocket-dial. The thing you actually hold.</span></a>
@@ -133,7 +124,7 @@
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> wifi / ble</h2><span class="blurb">seeing what the air is up to</span><span class="count">5</span></div>
+      <h2>wifi / ble <span class="blurb">seeing what the air is up to</span><span class="count">5</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/wifi-ble-marauder"><span class="name">wifi-ble-marauder</span><span class="desc">Wi-Fi/BLE security tool in straight ESP-IDF: 5 GHz deauth, Thread/Matter/Zigbee, BLE 5. No Arduino, on purpose.</span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/deauth-detector"><span class="name">deauth-detector</span><span class="desc">Notices when someone's kicking devices off 802.11, and tells the other nodes over LoRa.</span></a>
@@ -144,7 +135,7 @@
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> lora / rf</h2><span class="blurb">long range, small power, weird waveforms</span><span class="count">2</span></div>
+      <h2>lora / rf <span class="blurb">long range, small power, weird waveforms</span><span class="count">2</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/lora-rf-toolkit"><span class="name">lora-rf-toolkit</span><span class="desc">For pulling LoRa apart: frequency sweeps, I/Q capture, chirp and parameter analysis.</span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/fsk-walkie-talkie"><span class="name">fsk-walkie-talkie</span><span class="desc">Two of these and you've got walkie-talkies. Voice over FSK, Codec2 on an SX1262.</span></a>
@@ -152,7 +143,7 @@
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> scanner · uniden bcd325p2</h2><span class="blurb">getting data out of the box</span><span class="count">4</span></div>
+      <h2>scanner · uniden bcd325p2 <span class="blurb">getting data out of the box</span><span class="count">4</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/bcd325p2-protocol"><span class="name">bcd325p2-protocol</span><span class="desc">Serial command-protocol reference for the BCD325P2. The manual the manual should have been.</span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/bcd325-splunk-addon"><span class="name">bcd325-splunk-addon</span><span class="desc">Splunk add-on that swallows the scanner's serial telemetry and parses P25/EDACS.</span></a>
@@ -162,7 +153,7 @@
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> mesh / radio networking</h2><span class="blurb">networks with no one in charge</span><span class="count">3</span></div>
+      <h2>mesh / radio networking <span class="blurb">networks with no one in charge</span><span class="count">3</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/meshtap"><span class="name">meshtap</span><span class="desc">Quietly siphons Meshtastic traffic into BigQuery over a cellular MQTT link.</span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/reticulum"><span class="name">reticulum</span><span class="desc">Crypto-based mesh over LoRa, packet radio, serial, TCP. Works where the internet doesn't. <span class="flag">[<b>vendored</b>]</span></span></a>
@@ -171,37 +162,37 @@
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> mobile hotspot</h2><span class="blurb">getting root on the thing in your pocket</span><span class="count">1</span></div>
+      <h2>mobile hotspot <span class="blurb">getting root on the thing in your pocket</span><span class="count">1</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/orbic-toolkit"><span class="name">orbic-toolkit</span><span class="desc">Universal root-access &amp; payload installer for the Orbic RC400L ARMv7 hotspot. Command injection via SetRemoteAccessCfg, then push any ARM binary as a managed init service. Network or USB path. Built on EFF rayhunter's exploit chain.</span></a>
       </div>
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> networking</h2><span class="blurb">ads resolve to nowhere</span><span class="count">1</span></div>
+      <h2>networking <span class="blurb">ads resolve to nowhere</span><span class="count">1</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/ESP32_AdBlocker_Reborn"><span class="name">ESP32_AdBlocker_Reborn</span><span class="desc">A network-wide adblocker that fits on a dev board. Sinkholes ads and trackers at the DNS layer; the blocked ones get answered down in the Ethernet driver in ~1.8 ms, never touching lwIP.</span></a>
       </div>
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> comms / crypto</h2><span class="blurb">talking without everyone listening</span><span class="count">3</span></div>
+      <h2>comms / crypto <span class="blurb">talking without everyone listening</span><span class="count">3</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/tor-voice"><span class="name">tor-voice</span><span class="desc">Encrypted voice over Tor: an in-process Arti onion service, Opus, and Noise doing the talking.</span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/glossh"><span class="name">glossh</span><span class="desc">A tiny SSH 2.0 server for ESP-IDF, built on PSA Crypto. Just enough to get a shell.</span></a>
-        <a class="row" href="https://github.com/GlomarGadaffi/esp-secure-transport"><span class="name">esp-secure-transport</span><span class="desc">A MIT/PD secure-transport stack for ESP-IDF. Set down for now, not abandoned. <span class="flag">[<b>paused</b>]</span></span></a>
+        <a class="row" href="https://github.com/GlomarGadaffi/esp-secure-transport"><span class="name">esp-secure-transport</span><span class="desc">A MIT/PD secure-transport stack for ESP-IDF. Set down for now, not abandoned. <span class="flag paused">[<b>paused</b>]</span></span></a>
       </div>
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> hardware / tooling</h2><span class="blurb">making a screen turn on</span><span class="count">1</span></div>
+      <h2>hardware / tooling <span class="blurb">making a screen turn on</span><span class="count">1</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/jc3248-display-driver"><span class="name">jc3248-display-driver</span><span class="desc">ESP-IDF driver and bring-up for the Guition JC3248W535EN (AXS15231B over QSPI). Mostly so I never have to do it again.</span></a>
       </div>
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> agents / data</h2><span class="blurb">small brains, big logs</span><span class="count">2</span></div>
+      <h2>agents / data <span class="blurb">small brains, big logs</span><span class="count">2</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/esp32-ai-agent"><span class="name">esp32-ai-agent</span><span class="desc">An AI agent on an ESP32 that remembers things and runs a rule engine offline when the cloud's gone.</span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/ask-the-logs"><span class="name">ask-the-logs</span><span class="desc">Ask BigQuery questions in plain English. Google ADK plus Gemini do the SQL.</span></a>
@@ -209,7 +200,7 @@
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> synthetic demos</h2><span class="blurb">made-up data, real point</span><span class="count">2</span></div>
+      <h2>synthetic demos <span class="blurb">made-up data, real point</span><span class="count">2</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/deanon-demo"><span class="name">deanon-demo</span><span class="desc">What roughly $900 of off-the-shelf gear can piece back together about someone juggling pseudonyms. Numbers are fake; the lesson isn't. <span class="flag">[<b>synthetic</b>]</span></span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/sentinel-node-demo"><span class="name">sentinel-node-demo</span><span class="desc">The second- and third-order ways watching and counter-watching feed back on each other. <span class="flag">[<b>synthetic</b>]</span></span></a>
@@ -217,7 +208,7 @@
     </section>
 
     <section>
-      <div class="shead"><h2><span class="hash">#</span> other</h2><span class="blurb">didn't fit anywhere else</span><span class="count">1</span></div>
+      <h2>other <span class="blurb">didn't fit anywhere else</span><span class="count">1</span></h2>
       <div class="rows">
         <a class="row" href="https://github.com/GlomarGadaffi/rdp-publisher-cert"><span class="name">rdp-publisher-cert</span><span class="desc">Stamps a publisher cert onto .rdp files: self-signed, Group Policy, and the consent prompt out of the way.</span></a>
       </div>
@@ -226,10 +217,20 @@
   </main>
 
   <footer>
-    <span class="note">Built on small boards, in spare hours, between things. If something here looks half-finished, it probably is. The code's all up there, go read it.</span>
-    <a href="https://github.com/GlomarGadaffi">all of it on GitHub →</a>
+    <p>Built on small boards, in spare hours, between things. If something here looks half-finished, it probably is. The code's all up there on <a href="https://github.com/GlomarGadaffi">GitHub</a>. This site has no tracking, no remote fonts, and no frameworks.</p>
   </footer>
 
 </div>
+
+<script>
+(function(){
+ var h=document.documentElement;
+ function load(k){try{return localStorage.getItem(k)==="1"}catch(e){return false}}
+ function save(k,v){try{localStorage.setItem(k,v?"1":"0")}catch(e){}}
+ [["contrast","pd-contrast"],["inverted","pd-inverted"]].forEach(function(p){if(load(p[1]))h.classList.add(p[0])});
+ document.getElementById("contrast").onclick=function(){save("pd-contrast",h.classList.toggle("contrast"))};
+ document.getElementById("invmode").onclick=function(){save("pd-inverted",h.classList.toggle("inverted"))};
+})();
+</script>
 </body>
 </html>
