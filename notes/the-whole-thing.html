@@ -143,6 +143,74 @@ figcaption{font-family:var(--mono);font-size:.75em;color:var(--ink-dim);margin-t
   .line:hover .arrow{transform:none}
 }
 </style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "https://glomargadaffi.github.io/notes/the-whole-thing.html#faq",
+  "isPartOf": {
+    "@id": "https://glomargadaffi.github.io/notes/the-whole-thing.html#page"
+  },
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What is pocket-dial?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A SIP PBX that runs on a single ESP32-S3. You register any SIP phone to it and make calls. The same C++17 engine also builds as a desktop program."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does pocket-dial need a server or the cloud?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The project is designed to run without a separate router, server or cloud service."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is tincan?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A push-to-talk SIP handset that registers to pocket-dial. Audio is G.711 over Wi-Fi."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does “vendored” mean on this page?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The project is third-party code that the author depends on and includes, rather than original work."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does “paused” mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The project is set down for now and is not being actively developed. It is not abandoned."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Have these projects been tested on real hardware?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It varies. Each repository's README states its own status. For example, glossh has been tested on the host but not yet on hardware."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What is reticulum?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "An encrypted mesh networking stack that runs over LoRa, packet radio, serial and TCP, so it can work where the internet doesn't."
+      }
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <button class="ci" id="contrast" type="button">Contrast</button>
@@ -245,6 +313,24 @@ figcaption{font-family:var(--mono);font-size:.75em;color:var(--ink-dim);margin-t
       <a class="line" href="../ask-the-logs/">
         <span class="nm">ask-the-logs</span><span class="ds">natural-language queries over BigQuery, using Google ADK and Gemini. Reads across all 11 sensor pipelines.</span><span class="arrow">&rarr;</span></a>
     </section>
+
+    <section class="movement" id="faq">
+<h2>Frequently asked questions</h2>
+<h3>What is pocket-dial?</h3>
+<p>A SIP PBX that runs on a single ESP32-S3. You register any SIP phone to it and make calls. The same C++17 engine also builds as a desktop program.</p>
+<h3>Does pocket-dial need a server or the cloud?</h3>
+<p>No. The project is designed to run without a separate router, server or cloud service.</p>
+<h3>What is tincan?</h3>
+<p>A push-to-talk SIP handset that registers to pocket-dial. Audio is G.711 over Wi-Fi.</p>
+<h3>What does “vendored” mean on this page?</h3>
+<p>The project is third-party code that the author depends on and includes, rather than original work.</p>
+<h3>What does “paused” mean?</h3>
+<p>The project is set down for now and is not being actively developed. It is not abandoned.</p>
+<h3>Have these projects been tested on real hardware?</h3>
+<p>It varies. Each repository&#x27;s README states its own status. For example, glossh has been tested on the host but not yet on hardware.</p>
+<h3>What is reticulum?</h3>
+<p>An encrypted mesh networking stack that runs over LoRa, packet radio, serial and TCP, so it can work where the internet doesn&#x27;t.</p>
+</section>
 
     <section class="movement" id="demos">
       <span class="step">06 &middot; demos</span>
