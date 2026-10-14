@@ -4,12 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>glomar · small radios, mostly</title>
-<meta name="description" content="A solo embedded/RF hacker. ESP32, LoRa, SIP, Meshtastic, P25. Small wireless things that mostly work.">
-<meta property="og:title" content="glomar">
-<meta property="og:description" content="Small radios, mostly. ESP32 · LoRa · SIP · Meshtastic. And a cat, allegedly.">
+<title>glomar · small radios, mostly — ESP32, LoRa &amp; SIP projects</title>
+<meta name="description" content="Glomar: ESP32, LoRa, SIP, Meshtastic and Uniden scanner projects. Includes pocket-dial, a SIP PBX that runs on one ESP32-S3. Code on GitHub.">
+<meta name="author" content="Glomar">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://glomargadaffi.github.io/">
+<link rel="me" href="https://github.com/GlomarGadaffi">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ctext y='13' font-size='13' font-family='monospace'%3Eg%3C/text%3E%3C/svg%3E">
+<meta property="og:title" content="glomar · small radios, mostly">
+<meta property="og:description" content="ESP32, LoRa, SIP, Meshtastic and scanner projects by Glomar. Code on GitHub.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://glomargadaffi.github.io/">
+<meta property="og:site_name" content="glomar">
+<meta property="og:locale" content="en_US">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="glomar · small radios, mostly">
+<meta name="twitter:description" content="ESP32, LoRa, SIP, Meshtastic and scanner projects by Glomar. Code on GitHub.">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://glomargadaffi.github.io/#website",
+      "url": "https://glomargadaffi.github.io/",
+      "name": "glomar",
+      "description": "Projects by Glomar: ESP32, LoRa, SIP, Meshtastic and scanner tooling."
+    },
+    {
+      "@type": "Person",
+      "@id": "https://glomargadaffi.github.io/#person",
+      "name": "Glomar",
+      "alternateName": "GlomarGadaffi",
+      "url": "https://glomargadaffi.github.io/",
+      "sameAs": ["https://github.com/GlomarGadaffi"],
+      "description": "Solo embedded and RF hacker who builds small wireless devices on ESP32 boards.",
+      "knowsAbout": ["ESP32", "ESP-IDF", "LoRa", "SIP", "Meshtastic", "Embedded systems", "Radio frequency", "Bluetooth Low Energy"]
+    }
+  ]
+}
+</script>
 <style>
 /* Layout and type borrowed from the Switchboard design system; the palette stays plain. */
 :root{
@@ -157,7 +191,7 @@ a.row:hover .name,a.row:focus-visible .name{color:var(--brass)}
     <section>
       <h2>mesh / radio networking <span class="blurb">networks with no one in charge</span><span class="count">3</span></h2>
       <div class="rows">
-        <a class="row" href="https://github.com/GlomarGadaffi/meshtap"><span class="name">meshtap</span><span class="desc">Quietly siphons Meshtastic traffic into BigQuery over a cellular MQTT link.</span></a>
+        <div class="row"><span class="name">meshtap</span><span class="desc">Quietly siphons Meshtastic traffic into BigQuery over a cellular MQTT link. <span class="flag">[<b>private</b>]</span></span></div>
         <a class="row" href="https://github.com/GlomarGadaffi/reticulum"><span class="name">reticulum</span><span class="desc">Crypto-based mesh over LoRa, packet radio, serial, TCP. Works where the internet doesn't. <span class="flag">[<b>vendored</b>]</span></span></a>
         <a class="row" href="https://github.com/GlomarGadaffi/rfparty"><span class="name">rfparty</span><span class="desc">A dashboard that turns BLE/Wi-Fi telemetry into a picture of who's around. <span class="flag">[<b>vendored</b>]</span></span></a>
       </div>
@@ -219,7 +253,7 @@ a.row:hover .name,a.row:focus-visible .name{color:var(--brass)}
   </main>
 
   <footer>
-    <p>Built on small boards, in spare hours, between things. If something here looks half-finished, it probably is. The code's all up there on <a href="https://github.com/GlomarGadaffi">GitHub</a>. This site has no tracking, no remote fonts, and no frameworks.</p>
+    <p>Built on small boards, in spare hours, between things. If something here looks half-finished, it probably is. Most of the code is public on <a href="https://github.com/GlomarGadaffi">GitHub</a>; a few projects are private and marked as such. This site has no tracking, no remote fonts, and no frameworks.</p>
   </footer>
 
 </div>

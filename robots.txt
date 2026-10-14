@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://glomargadaffi.github.io/sitemap.xml
